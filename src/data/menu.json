@@ -1,0 +1,53 @@
+{
+  "items": [
+    {
+      "texto": "Colegio",
+      "enlace": "/nuestro-colegio-2/",
+      "submenu": [
+        { "texto": "PEI", "enlace": "/pei/" },
+        { "texto": "Equipo Directivo", "enlace": "/equipo-directivo/" },
+        { "texto": "Equipo PIE", "enlace": "/equipo-pie/" },
+        { "texto": "Docentes", "enlace": "/docentes/" },
+        { "texto": "Asistentes de la Educación", "enlace": "/asistentes-de-la-educacion/" }
+      ]
+    },
+    {
+      "texto": "Comunidad",
+      "enlace": "/comunidad-mdech/",
+      "submenu": [
+        { "texto": "Centro de Estudiantes", "enlace": "/cee/" },
+        { "texto": "Centro de Padres", "enlace": "/cegepa/" },
+        { "texto": "Comité Paritario", "enlace": "/comite-paritario/" }
+      ]
+    },
+    {
+      "texto": "Convivencia Escolar",
+      "enlace": "/convivencia-escolar/",
+      "submenu": [
+        { "texto": "Reglamento Interno", "enlace": "/reglamento-interno-2/" },
+        { "texto": "Plan de Gestión", "enlace": "/plan-de-gestion/" },
+        { "texto": "Protocolos", "enlace": "/protocolos/" },
+        { "texto": "Plan de Apoyo a la Inclusión", "enlace": "/plan-de-apoyo-a-la-inclusion/" },
+        { "texto": "Plan de Afectividad, Sexualidad y Género", "enlace": "/plan-de-afectividad-sexualidad-y-genero/" },
+        { "texto": "Plan de Formación Ciudadana", "enlace": "/plan-de-formacion-ciudadana/" },
+        { "texto": "Plan Integral de Seguridad Escolar", "enlace": "/pise/" }
+      ]
+    },
+    { "texto": "Talleres", "enlace": "/talleres-extraescolares/", "submenu": [] },
+    {
+      "texto": "Aula Virtual",
+      "enlace": "/aula-virtual/",
+      "submenu": [
+        { "texto": "Calendario de Evaluaciones", "enlace": "https://2ciclomarina.github.io/consultas/#calendario" },
+        { "texto": "Reglamento de Evaluación", "enlace": "/reglamento-de-evaluacion/" },
+        { "texto": "Horarios Cursos", "enlace": "/horarios-cursos/" },
+        { "texto": "Talleres Extraescolares", "enlace": "/talleres-extraescolares/" },
+        { "texto": "Plan Lector", "enlace": "/plan-lector/" },
+        { "texto": "Uniforme Oficial", "enlace": "/uniforme-oficial/" },
+        { "texto": "Lista de Útiles", "enlace": "/lista-de-utiles/" }
+      ]
+    },
+    { "texto": "Docentes", "enlace": "https://sites.google.com/andaliensur.cl/gestion/p%C3%A1gina-principal?authuser=3", "submenu": [] },
+    { "texto": "Admisión", "enlace": "/admision/", "submenu": [] }
+  ]
+}

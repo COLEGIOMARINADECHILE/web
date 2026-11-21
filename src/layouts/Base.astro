@@ -1,0 +1,42 @@
+---
+import '@fontsource/open-sans/400.css';
+import '@fontsource/open-sans/600.css';
+import '@fontsource/open-sans/700.css';
+import '../styles/sitio.css';
+import Encabezado from '../components/Encabezado.astro';
+import Pie from '../components/Pie.astro';
+import sitio from '../data/sitio.json';
+import { url } from '../lib/util';
+
+interface Props { titulo?: string; descripcion?: string; imagen?: string | null }
+const { titulo, descripcion = `${sitio.nombre} · ${sitio.lema}`, imagen } = Astro.props;
+const tituloCompleto = titulo ? `${titulo} – ${sitio.nombre}` : `${sitio.nombre} – ${sitio.lema}`;
+const imagenSocial = new URL(url(imagen || '/uploads/2024/07/Frontis-colegio-mdech-e1736613516883.jpg'), Astro.site).href;
+---
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{tituloCompleto}</title>
+  <meta name="description" content={descripcion} />
+  <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site).href} />
+  <link rel="icon" href={url('/uploads/2025/01/cropped-favicon-mdch-32x32.png')} sizes="32x32" />
+  <link rel="apple-touch-icon" href={url('/uploads/2025/01/cropped-favicon-mdch-192x192.png')} />
+  <meta property="og:title" content={tituloCompleto} />
+  <meta property="og:description" content={descripcion} />
+  <meta property="og:image" content={imagenSocial} />
+  <meta property="og:locale" content="es_CL" />
+  <meta name="theme-color" content="#204070" />
+</head>
+<body>
+  <a class="saltar" href="#contenido">Ir al contenido</a>
+  <div class="hoja">
+    <Encabezado />
+    <main id="contenido">
+      <slot />
+    </main>
+  </div>
+  <Pie />
+</body>
+</html>

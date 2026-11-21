@@ -1,0 +1,28 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Base from '../../../layouts/Base.astro';
+import Lateral from '../../../components/Lateral.astro';
+import ListaNoticias from '../../../components/ListaNoticias.astro';
+import Paginacion from '../../../components/Paginacion.astro';
+import { noticiasOrdenadas, POR_PAGINA, CATEGORIAS, url } from '../../../lib/util';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const rutas = [];
+  for (const categoria of Object.keys(CATEGORIAS)) {
+    rutas.push(...paginate(await noticiasOrdenadas(categoria), { pageSize: POR_PAGINA * 2, params: { categoria } }));
+  }
+  return rutas;
+}) satisfies GetStaticPaths;
+const { page } = Astro.props;
+const { categoria } = Astro.params;
+const nombre = CATEGORIAS[categoria];
+---
+<Base titulo={nombre}>
+  <div class="con-lateral">
+    <section>
+      <ListaNoticias noticias={page.data} titulo={nombre} />
+      <Paginacion page={page} raiz={url(`/category/${categoria}/`)} />
+    </section>
+    <Lateral />
+  </div>
+</Base>

@@ -1,0 +1,31 @@
+---
+import sitio from '../data/sitio.json';
+import { url, esExterno } from '../lib/util';
+const anio = new Date().getFullYear();
+const ext = (e: string) => (esExterno(e) ? { target: '_blank', rel: 'noopener' } : {});
+---
+<footer class="pie">
+  <div class="pie-columnas">
+    <section>
+      <h2>{sitio.nombre}</h2>
+      <div class="pie-contacto">
+        <img src={url('/uploads/2025/08/logo-mdch-1-e1755496531297.png')} alt="Insignia del colegio" width="120" height="150" loading="lazy" />
+        <address>
+          {sitio.direccion}<br /><br />
+          {sitio.comuna}<br />
+          {sitio.ciudad.toUpperCase()}<br />
+          <a href={`tel:${sitio.telefono.replace(/\s/g, '')}`}>{sitio.telefono}</a>
+        </address>
+      </div>
+    </section>
+    <section>
+      <h2>Información</h2>
+      <ul>{sitio.pieInformacion.map((l) => <li><a href={url(l.enlace)} {...ext(l.enlace)}>{l.texto}</a></li>)}</ul>
+    </section>
+    <section>
+      <h2>Enlaces de interés</h2>
+      <ul>{sitio.pieEnlaces.map((l) => <li><a href={url(l.enlace)} {...ext(l.enlace)}>{l.texto}</a></li>)}</ul>
+    </section>
+  </div>
+  <p class="pie-final">{anio} {sitio.nombre} ©</p>
+</footer>

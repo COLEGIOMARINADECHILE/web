@@ -1,0 +1,20 @@
+---
+import sitio from '../data/sitio.json';
+import { url, noticiasOrdenadas } from '../lib/util';
+const circulares = (await noticiasOrdenadas('circulares')).slice(0, 3);
+---
+<aside class="lateral">
+  <section class="widget">
+    <h2 class="widget-titulo">Circulares</h2>
+    <ul class="widget-lista">
+      {circulares.map((c) => <li><a href={url(`/${c.id}/`)}>{c.data.titulo}</a></li>)}
+    </ul>
+    <p><a class="ver-mas" href={url('/category/circulares/')}>Ver todas las circulares →</a></p>
+  </section>
+  <section class="widget">
+    <h2 class="widget-titulo">Redes sociales</h2>
+    <ul class="redes">
+      {sitio.redes.map((r) => <li><a href={r.url} target="_blank" rel="noopener">{r.nombre}</a></li>)}
+    </ul>
+  </section>
+</aside>

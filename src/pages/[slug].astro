@@ -1,0 +1,64 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Lateral from '../components/Lateral.astro';
+import menu from '../data/menu.json';
+import { url, esExterno, fechaLarga, CATEGORIAS } from '../lib/util';
+
+export async function getStaticPaths() {
+  const noticias = await getCollection('noticias', (n) => !n.data.borrador);
+  const paginas = await getCollection('paginas');
+  return [
+    ...noticias.map((e) => ({ params: { slug: e.id }, props: { tipo: 'noticia' as const, entrada: e } })),
+    ...paginas.map((e) => ({ params: { slug: e.id }, props: { tipo: 'pagina' as const, entrada: e } })),
+  ];
+}
+
+const { tipo, entrada } = Astro.props;
+const { Content } = await render(entrada);
+const vacia = !entrada.body?.trim();
+const data = entrada.data as any;
+// Páginas sin texto que son una sección del menú: se muestran sus subpáginas.
+const seccion = menu.items.find((i) => i.enlace === `/${entrada.id}/`);
+const subpaginas = seccion?.submenu ?? [];
+const resumen = data.resumen || `${data.titulo} – Colegio Marina de Chile`;
+---
+<Base titulo={data.titulo} descripcion={resumen} imagen={data.imagen}>
+  <div class="con-lateral">
+    <article class="entrada">
+      <header class="entrada-cabecera">
+        <h1>{data.titulo}</h1>
+        {tipo === 'noticia' && (
+          <p class="meta">
+            <time datetime={data.fecha.toISOString().slice(0, 10)}>{fechaLarga(data.fecha)}</time>
+            <a href={url(`/category/${data.categoria}/`)}>{CATEGORIAS[data.categoria]}</a>
+          </p>
+        )}
+      </header>
+
+      {tipo === 'noticia' && data.imagen && !entrada.body?.includes(data.imagen) && (
+        <img class="entrada-imagen" src={url(data.imagen)} alt="" />
+      )}
+
+      {data.documento && (
+        <div class="documento">
+          <object data={url(data.documento)} type="application/pdf" aria-label={data.titulo}></object>
+          <p class="parrafo-boton"><a class="boton" href={url(data.documento)} target="_blank" rel="noopener">Descargar {data.titulo} (PDF)</a></p>
+        </div>
+      )}
+
+      <div class="contenido">
+        <Content />
+        {vacia && !data.documento && subpaginas.length > 0 && (
+          <ul class="subpaginas">
+            {subpaginas.map((s) => <li><a href={url(s.enlace)} {...(esExterno(s.enlace) ? { target: '_blank', rel: 'noopener' } : {})}>{s.texto}</a></li>)}
+          </ul>
+        )}
+        {vacia && !data.documento && subpaginas.length === 0 && (
+          <p class="aviso">Estamos actualizando esta sección. Pronto encontrarás aquí más información.</p>
+        )}
+      </div>
+    </article>
+    <Lateral />
+  </div>
+</Base>

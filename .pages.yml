@@ -1,0 +1,132 @@
+# Configuración del panel de edición Pages CMS (https://pagescms.org)
+# Entra a https://app.pagescms.org con tu cuenta de GitHub y abre este repositorio.
+media:
+  input: public/uploads
+  output: /uploads
+
+content:
+  - name: noticias
+    label: Noticias y circulares
+    type: collection
+    path: src/content/noticias
+    filename: "{primary}.md"
+    view:
+      primary: titulo
+      fields: [titulo, fecha, categoria]
+      sort: [fecha, titulo]
+      default:
+        sort: fecha
+        order: desc
+    fields:
+      - { name: titulo, label: Título, type: string, required: true }
+      - { name: fecha, label: Fecha, type: date, required: true }
+      - name: categoria
+        label: Categoría
+        type: select
+        default: noticias
+        options:
+          values:
+            - { value: noticias, label: Noticias }
+            - { value: informacion, label: Información }
+            - { value: circulares, label: Circulares }
+      - { name: imagen, label: Imagen principal, type: image, description: "Se muestra en la lista de noticias y en el carrusel de la portada." }
+      - { name: documento, label: Documento PDF, type: file, description: "Para circulares: el PDF se muestra en la página con un botón de descarga." }
+      - { name: resumen, label: Resumen, type: text, description: "Texto corto para la lista de noticias. Si lo dejas vacío no se muestra resumen." }
+      - { name: destacada, label: Destacar en el carrusel de la portada, type: boolean, default: false }
+      - { name: borrador, label: Borrador (no publicar todavía), type: boolean, default: false }
+      - { name: body, label: Contenido, type: rich-text }
+
+  - name: paginas
+    label: Páginas
+    type: collection
+    path: src/content/paginas
+    filename: "{primary}.md"
+    view:
+      primary: titulo
+      fields: [titulo]
+    fields:
+      - { name: titulo, label: Título, type: string, required: true }
+      - { name: imagen, label: Imagen para redes sociales, type: image }
+      - { name: body, label: Contenido, type: rich-text }
+
+  - name: actividades
+    label: Próximas actividades
+    type: file
+    path: src/data/actividades.json
+    description: "Agenda de la portada. Las actividades con fecha pasada se ocultan solas."
+    fields:
+      - name: actividades
+        label: Actividades
+        type: object
+        list: true
+        fields:
+          - { name: fecha, label: Fecha, type: date, required: true }
+          - { name: titulo, label: Actividad, type: string, required: true }
+
+  - name: sitio
+    label: Portada y datos del colegio
+    type: file
+    path: src/data/sitio.json
+    fields:
+      - { name: nombre, label: Nombre del colegio, type: string }
+      - { name: lema, label: Lema, type: string }
+      - { name: direccion, label: Dirección, type: string }
+      - { name: comuna, label: Comuna o sector, type: string }
+      - { name: ciudad, label: Ciudad, type: string }
+      - { name: telefono, label: Teléfono, type: string }
+      - name: destacados
+        label: Tarjetas bajo el carrusel (3)
+        type: object
+        list: true
+        fields:
+          - { name: titulo, label: Título, type: string }
+          - { name: imagen, label: Imagen, type: image }
+          - { name: enlace, label: Enlace, type: string, description: "Página interna (ej. /admision/) o dirección completa (https://...)." }
+      - name: instagram
+        label: Instagram (Últimas actividades)
+        type: object
+        fields:
+          - { name: usuario, label: Usuario, type: string }
+          - { name: descripcion, label: Descripción, type: text }
+          - { name: publicaciones, label: Publicaciones a mostrar (enlaces), type: string, list: true, description: "Copia el enlace de cada publicación de Instagram (ej. https://www.instagram.com/p/XXXX/)." }
+      - name: redes
+        label: Redes sociales (barra lateral)
+        type: object
+        list: true
+        fields:
+          - { name: nombre, label: Nombre, type: string }
+          - { name: url, label: Enlace, type: string }
+      - name: pieInformacion
+        label: "Pie de página: Información"
+        type: object
+        list: true
+        fields:
+          - { name: texto, label: Texto, type: string }
+          - { name: enlace, label: Enlace, type: string }
+      - name: pieEnlaces
+        label: "Pie de página: Enlaces de interés"
+        type: object
+        list: true
+        fields:
+          - { name: texto, label: Texto, type: string }
+          - { name: enlace, label: Enlace, type: string }
+
+  - name: menu
+    label: Menú principal
+    type: file
+    path: src/data/menu.json
+    fields:
+      - name: items
+        label: Opciones del menú
+        type: object
+        list: true
+        fields:
+          - { name: texto, label: Texto, type: string }
+          - { name: enlace, label: Enlace, type: string }
+          - name: submenu
+            label: Submenú
+            type: object
+            list: true
+            fields:
+              - { name: texto, label: Texto, type: string }
+              - { name: enlace, label: Enlace, type: string }

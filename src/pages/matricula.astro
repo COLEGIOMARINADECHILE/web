@@ -1,0 +1,14 @@
+---
+// Mantiene el acceso directo colegiomarinadechile.cl/matricula que hoy redirige a la plataforma.
+const destino = 'https://2ciclomarina.github.io/matricula/';
+---
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="refresh" content={`0; url=${destino}`} />
+  <link rel="canonical" href={destino} />
+  <title>Plataforma de Matrícula</title>
+</head>
+<body><p>Redirigiendo a la <a href={destino}>plataforma de matrícula</a>…</p></body>
+</html>
