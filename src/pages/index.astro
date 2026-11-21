@@ -1,98 +1,129 @@
 ---
 import Base from '../layouts/Base.astro';
-import Lateral from '../components/Lateral.astro';
 import ListaNoticias from '../components/ListaNoticias.astro';
+import Icono from '../components/Iconos.astro';
 import sitio from '../data/sitio.json';
 import { actividades } from '../data/actividades.json';
-import { url, esExterno, noticiasOrdenadas, POR_PAGINA } from '../lib/util';
+import { url, esExterno, fechaLarga, noticiasOrdenadas } from '../lib/util';
 
 const noticias = await noticiasOrdenadas();
 const destacadas = noticias.filter((n) => n.data.destacada);
-const recientes = noticias.slice(0, POR_PAGINA);
-const hayMas = noticias.length > POR_PAGINA;
+const recientes = noticias.filter((n) => n.data.categoria !== 'circulares').slice(0, 6);
+const circulares = noticias.filter((n) => n.data.categoria === 'circulares').slice(0, 5);
+const ext = (e: string) => (esExterno(e) ? { target: '_blank', rel: 'noopener' } : {});
 
 const dias = new Intl.DateTimeFormat('es-CL', { weekday: 'long', timeZone: 'UTC' });
-const meses = new Intl.DateTimeFormat('es-CL', { month: 'long', timeZone: 'UTC' });
+const meses = new Intl.DateTimeFormat('es-CL', { month: 'short', timeZone: 'UTC' });
 const agenda = [...actividades]
   .sort((a, b) => a.fecha.localeCompare(b.fecha))
   .map((a) => {
     const d = new Date(a.fecha + 'T00:00:00Z');
-    return { ...a, dia: d.getUTCDate(), mes: meses.format(d), semana: dias.format(d) };
+    return { ...a, dia: d.getUTCDate(), mes: meses.format(d).replace('.', ''), semana: dias.format(d) };
   });
 const idPost = (enlace: string) => enlace.match(/instagram\.com\/(?:p|reel)\/([^/?#]+)/)?.[1];
 ---
 <Base>
   {destacadas.length > 0 && (
-    <section class="carrusel" aria-label="Destacados" aria-roledescription="carrusel">
-      <div class="carrusel-pista">
-        {destacadas.map((n, i) => (
-          <article class="diapositiva" id={`diapositiva-${i}`} aria-label={`${i + 1} de ${destacadas.length}`}>
-            {n.data.imagen && <img src={url(n.data.imagen)} alt="" loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined} />}
-            <div class="diapositiva-texto">
-              <h2><a href={url(`/${n.id}/`)}>{n.data.titulo}</a></h2>
-              {n.data.resumen && <p>{n.data.resumen} […]</p>}
-              <a class="boton" href={url(`/${n.id}/`)}>Seguir leyendo</a>
-            </div>
-          </article>
-        ))}
-      </div>
-      {destacadas.length > 1 && (
-        <div class="carrusel-puntos">
-          {destacadas.map((_, i) => <button type="button" aria-label={`Ver destacado ${i + 1}`} data-i={i} aria-current={i === 0 ? 'true' : undefined}></button>)}
+    <section class="portada" aria-label="Destacados" aria-roledescription="carrusel">
+      <div class="contenedor">
+        <div class="carrusel-pista">
+          {destacadas.map((n, i) => (
+            <article class="diapositiva" aria-label={`${i + 1} de ${destacadas.length}`}>
+              <div class="diapositiva-texto">
+                <span class="sobretitulo">Destacado</span>
+                <h2><a href={url(`/${n.id}/`)}>{n.data.titulo}</a></h2>
+                {n.data.resumen && <p>{n.data.resumen}</p>}
+                <a class="boton boton-amarillo" href={url(`/${n.id}/`)}>Seguir leyendo <Icono nombre="flecha" tamano={18} /></a>
+              </div>
+              <a class="diapositiva-imagen" href={url(`/${n.id}/`)} tabindex="-1" aria-hidden="true">
+                {n.data.imagen && <img src={url(n.data.imagen)} alt="" loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined} />}
+              </a>
+            </article>
+          ))}
         </div>
-      )}
+        {destacadas.length > 1 && (
+          <div class="carrusel-puntos">
+            {destacadas.map((_, i) => <button type="button" aria-label={`Ver destacado ${i + 1}`} data-i={i} aria-current={i === 0 ? 'true' : undefined}></button>)}
+          </div>
+        )}
+      </div>
     </section>
   )}
 
-  <section class="destacados">
+  <section class="contenedor accesos" aria-label="Accesos rápidos">
     {sitio.destacados.map((d) => (
-      <a class="destacado" href={url(d.enlace)} {...(esExterno(d.enlace) ? { target: '_blank', rel: 'noopener' } : {})}>
-        <img src={url(d.imagen)} alt="" loading="lazy" decoding="async" width="320" height="180" />
-        <span>{d.titulo}</span>
+      <a class="acceso" href={url(d.enlace)} {...ext(d.enlace)}>
+        <img src={url(d.imagen)} alt="" loading="lazy" decoding="async" width="400" height="225" />
+        <span class="acceso-texto">{d.titulo} <Icono nombre={esExterno(d.enlace) ? 'enlace' : 'flecha'} tamano={18} /></span>
       </a>
     ))}
   </section>
 
-  <hr class="separador" />
+  <section class="seccion">
+    <div class="contenedor">
+      <header class="seccion-cabecera">
+        <h2 class="titulo-seccion">Noticias</h2>
+        <a class="enlace-flecha" href={url('/noticias/')}>Ver todas <Icono nombre="flecha" tamano={16} /></a>
+      </header>
+      <ListaNoticias noticias={recientes} />
+    </div>
+  </section>
 
-  <div class="dos-columnas">
-    <section>
-      <h2 class="barra-titulo">Últimas Actividades</h2>
-      <div class="instagram-cabecera">
-        <a href={`https://www.instagram.com/${sitio.instagram.usuario}/`} target="_blank" rel="noopener"><strong>{sitio.instagram.usuario}</strong></a>
-        <p>{sitio.instagram.descripcion}</p>
+  <section class="seccion seccion-suave">
+    <div class="contenedor dos-columnas">
+      <div>
+        <header class="seccion-cabecera">
+          <h2 class="titulo-seccion">Próximas actividades</h2>
+        </header>
+        <ol class="agenda">
+          {agenda.map((a) => (
+            <li data-fecha={a.fecha}>
+              <span class="agenda-fecha"><b>{a.dia}</b>{a.mes}</span>
+              <span class="agenda-texto"><small>{a.semana}</small>{a.titulo}</span>
+            </li>
+          ))}
+        </ol>
+        <p class="agenda-vacia" hidden><Icono nombre="calendario" tamano={28} /> No hay actividades programadas por ahora. Revisa nuestras redes sociales para estar al día.</p>
       </div>
+      <div>
+        <header class="seccion-cabecera">
+          <h2 class="titulo-seccion">Circulares</h2>
+          <a class="enlace-flecha" href={url('/category/circulares/')}>Ver todas <Icono nombre="flecha" tamano={16} /></a>
+        </header>
+        <ul class="lista-circulares tarjeta-blanca">
+          {circulares.map((c) => (
+            <li><a href={url(`/${c.id}/`)}><Icono nombre="pdf" /><span>{c.data.titulo}<small>{fechaLarga(c.data.fecha)}</small></span></a></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="contenedor">
+      <header class="seccion-cabecera">
+        <div>
+          <h2 class="titulo-seccion">Últimas actividades</h2>
+          <p class="seccion-bajada">Lo que pasa en el colegio, en <a href={`https://www.instagram.com/${sitio.instagram.usuario}/`} target="_blank" rel="noopener">@{sitio.instagram.usuario}</a></p>
+        </div>
+        <a class="boton boton-contorno" href={`https://www.instagram.com/${sitio.instagram.usuario}/`} target="_blank" rel="noopener"><Icono nombre="instagram" tamano={18} /> Seguir en Instagram</a>
+      </header>
       <div class="instagram-grilla">
         {sitio.instagram.publicaciones.map((p) => idPost(p) && (
           <iframe src={`https://www.instagram.com/p/${idPost(p)}/embed`} title="Publicación de Instagram" loading="lazy"></iframe>
         ))}
       </div>
-      <p class="centrado"><a class="boton boton-instagram" href={`https://www.instagram.com/${sitio.instagram.usuario}/`} target="_blank" rel="noopener">Seguir en Instagram</a></p>
-    </section>
+    </div>
+  </section>
 
-    <section>
-      <h2 class="barra-titulo">Próximas Actividades</h2>
-      <ol class="agenda">
-        {agenda.map((a) => (
-          <li data-fecha={a.fecha}>
-            <div class="agenda-fecha"><span class="agenda-dia">{a.dia}</span><span class="agenda-mes">{a.mes}<br /><b>{a.semana}</b></span></div>
-            <p>{a.titulo}</p>
-          </li>
-        ))}
-      </ol>
-      <p class="agenda-vacia" hidden>No hay actividades programadas por ahora. Revisa nuestras redes sociales para estar al día.</p>
-    </section>
-  </div>
-
-  <hr class="separador" />
-
-  <div class="con-lateral">
-    <section>
-      <ListaNoticias noticias={recientes} titulo="Noticias recientes" />
-      {hayMas && <nav class="paginacion"><span aria-current="page">1</span><a href={url('/noticias/2/')}>2</a><a href={url('/noticias/2/')}>Siguientes</a></nav>}
-    </section>
-    <Lateral />
-  </div>
+  <section class="seccion seccion-azul">
+    <div class="contenedor">
+      <h2 class="titulo-seccion">Nuestras comunidades</h2>
+      <ul class="chips chips-claros">
+        {sitio.redes.map((r) => <li><a href={r.url} target="_blank" rel="noopener">{r.nombre}</a></li>)}
+      </ul>
+    </div>
+  </section>
 </Base>
 
 <script>
@@ -108,18 +139,15 @@ const idPost = (enlace: string) => enlace.match(/instagram\.com\/(?:p|reel)\/([^
   const puntos = [...document.querySelectorAll<HTMLButtonElement>('.carrusel-puntos button')];
   if (pista && puntos.length > 1) {
     let actual = 0;
+    const marcar = (i: number) => puntos.forEach((p, j) => p.toggleAttribute('aria-current', j === i));
     const ir = (i: number) => {
       actual = (i + puntos.length) % puntos.length;
       pista.scrollTo({ left: pista.clientWidth * actual, behavior: 'smooth' });
-      puntos.forEach((p, j) => p.toggleAttribute('aria-current', j === actual));
+      marcar(actual);
     };
     puntos.forEach((p, i) => p.addEventListener('click', () => { ir(i); clearInterval(t); }));
-    pista.addEventListener('scroll', () => {
-      const i = Math.round(pista.scrollLeft / pista.clientWidth);
-      puntos.forEach((p, j) => p.toggleAttribute('aria-current', j === i));
-      actual = i;
-    }, { passive: true });
-    const reducir = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const t = reducir ? 0 : setInterval(() => ir(actual + 1), 7000);
+    pista.addEventListener('scroll', () => { actual = Math.round(pista.scrollLeft / pista.clientWidth); marcar(actual); }, { passive: true });
+    const t = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : setInterval(() => ir(actual + 1), 7000);
+    pista.addEventListener('pointerenter', () => clearInterval(t));
   }
 </script>

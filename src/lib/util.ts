@@ -28,4 +28,4 @@ export async function noticiasOrdenadas(categoria?: string) {
 }
 
 export type Noticia = CollectionEntry<'noticias'>;
-export const POR_PAGINA = 5;
+export const POR_PAGINA = 9;

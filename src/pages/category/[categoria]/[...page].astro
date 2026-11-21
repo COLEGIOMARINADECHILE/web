@@ -1,7 +1,7 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import Base from '../../../layouts/Base.astro';
-import Lateral from '../../../components/Lateral.astro';
+import CabeceraPagina from '../../../components/CabeceraPagina.astro';
 import ListaNoticias from '../../../components/ListaNoticias.astro';
 import Paginacion from '../../../components/Paginacion.astro';
 import { noticiasOrdenadas, POR_PAGINA, CATEGORIAS, url } from '../../../lib/util';
@@ -9,7 +9,7 @@ import { noticiasOrdenadas, POR_PAGINA, CATEGORIAS, url } from '../../../lib/uti
 export const getStaticPaths = (async ({ paginate }) => {
   const rutas = [];
   for (const categoria of Object.keys(CATEGORIAS)) {
-    rutas.push(...paginate(await noticiasOrdenadas(categoria), { pageSize: POR_PAGINA * 2, params: { categoria } }));
+    rutas.push(...paginate(await noticiasOrdenadas(categoria), { pageSize: POR_PAGINA, params: { categoria } }));
   }
   return rutas;
 }) satisfies GetStaticPaths;
@@ -18,11 +18,14 @@ const { categoria } = Astro.params;
 const nombre = CATEGORIAS[categoria];
 ---
 <Base titulo={nombre}>
-  <div class="con-lateral">
-    <section>
-      <ListaNoticias noticias={page.data} titulo={nombre} />
-      <Paginacion page={page} raiz={url(`/category/${categoria}/`)} />
-    </section>
-    <Lateral />
-  </div>
+  <CabeceraPagina titulo={nombre} migas={[{ texto: 'Noticias', enlace: '/noticias/' }]}>
+    <ul class="filtros">
+      <li><a href={url('/noticias/')}>Todas</a></li>
+      {Object.entries(CATEGORIAS).map(([c, n]) => <li><a href={url(`/category/${c}/`)} aria-current={c === categoria ? 'page' : undefined}>{n}</a></li>)}
+    </ul>
+  </CabeceraPagina>
+  <section class="contenedor seccion-interior">
+    <ListaNoticias noticias={page.data} />
+    <Paginacion page={page} raiz={url(`/category/${categoria}/`)} />
+  </section>
 </Base>

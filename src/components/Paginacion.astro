@@ -6,10 +6,10 @@ const enlace = (n: number) => (n === 1 ? raiz : `${raiz}${n}/`);
 ---
 {page.lastPage > 1 && (
   <nav class="paginacion" aria-label="Páginas">
-    {page.url.prev && <a href={page.url.prev}>Anteriores</a>}
+    {page.url.prev && <a href={page.url.prev}>← Anteriores</a>}
     {Array.from({ length: page.lastPage }, (_, i) => i + 1).map((n) =>
       n === page.currentPage ? <span aria-current="page">{n}</span> : <a href={enlace(n)}>{n}</a>
     )}
-    {page.url.next && <a href={page.url.next}>Siguientes</a>}
+    {page.url.next && <a href={page.url.next}>Siguientes →</a>}
   </nav>
 )}

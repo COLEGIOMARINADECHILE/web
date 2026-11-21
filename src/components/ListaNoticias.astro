@@ -1,24 +1,24 @@
 ---
+import Icono from './Iconos.astro';
 import { url, fechaLarga, CATEGORIAS, type Noticia } from '../lib/util';
-interface Props { noticias: Noticia[]; titulo?: string }
-const { noticias, titulo } = Astro.props;
+interface Props { noticias: Noticia[] }
+const { noticias } = Astro.props;
 ---
-{titulo && <h2 class="barra-titulo">{titulo}</h2>}
-<div class="lista-noticias">
+<div class="grilla-noticias">
   {noticias.map((n) => (
-    <article class:list={['tarjeta-noticia', { 'sin-imagen': !n.data.imagen }]}>
-      {n.data.imagen && (
-        <a class="tarjeta-imagen" href={url(`/${n.id}/`)} tabindex="-1" aria-hidden="true">
-          <img src={url(n.data.imagen)} alt="" loading="lazy" decoding="async" width="200" height="125" />
-        </a>
-      )}
-      <div class="tarjeta-texto">
-        <h3><a href={url(`/${n.id}/`)}>{n.data.titulo}</a></h3>
-        {n.data.resumen && <p>{n.data.resumen}{n.data.resumen.endsWith('.') ? '' : ' […]'}</p>}
+    <article class="tarjeta">
+      <a class="tarjeta-imagen" href={url(`/${n.id}/`)} tabindex="-1" aria-hidden="true">
+        {n.data.imagen
+          ? <img src={url(n.data.imagen)} alt="" loading="lazy" decoding="async" width="400" height="225" />
+          : <span class={`tarjeta-sin-imagen cat-${n.data.categoria}`}><Icono nombre={n.data.documento ? 'pdf' : 'noticia'} tamano={40} /></span>}
+      </a>
+      <div class="tarjeta-cuerpo">
         <p class="meta">
+          <a class={`etiqueta cat-${n.data.categoria}`} href={url(`/category/${n.data.categoria}/`)}>{CATEGORIAS[n.data.categoria]}</a>
           <time datetime={n.data.fecha.toISOString().slice(0, 10)}>{fechaLarga(n.data.fecha)}</time>
-          <a href={url(`/category/${n.data.categoria}/`)}>{CATEGORIAS[n.data.categoria]}</a>
         </p>
+        <h3><a href={url(`/${n.id}/`)}>{n.data.titulo}</a></h3>
+        {n.data.resumen && <p class="tarjeta-resumen">{n.data.resumen}</p>}
       </div>
     </article>
   ))}

@@ -1,20 +1,23 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import Base from '../../layouts/Base.astro';
-import Lateral from '../../components/Lateral.astro';
+import CabeceraPagina from '../../components/CabeceraPagina.astro';
 import ListaNoticias from '../../components/ListaNoticias.astro';
 import Paginacion from '../../components/Paginacion.astro';
-import { noticiasOrdenadas, POR_PAGINA, url } from '../../lib/util';
+import { noticiasOrdenadas, POR_PAGINA, CATEGORIAS, url } from '../../lib/util';
 
 export const getStaticPaths = (async ({ paginate }) => paginate(await noticiasOrdenadas(), { pageSize: POR_PAGINA })) satisfies GetStaticPaths;
 const { page } = Astro.props;
 ---
 <Base titulo={page.currentPage > 1 ? `Noticias – página ${page.currentPage}` : 'Noticias'}>
-  <div class="con-lateral">
-    <section>
-      <ListaNoticias noticias={page.data} titulo="Todas las publicaciones" />
-      <Paginacion page={page} raiz={url('/noticias/')} />
-    </section>
-    <Lateral />
-  </div>
+  <CabeceraPagina titulo="Noticias y circulares">
+    <ul class="filtros">
+      <li><a href={url('/noticias/')} aria-current="page">Todas</a></li>
+      {Object.entries(CATEGORIAS).map(([c, n]) => <li><a href={url(`/category/${c}/`)}>{n}</a></li>)}
+    </ul>
+  </CabeceraPagina>
+  <section class="contenedor seccion-interior">
+    <ListaNoticias noticias={page.data} />
+    <Paginacion page={page} raiz={url('/noticias/')} />
+  </section>
 </Base>

@@ -10,6 +10,7 @@
     "migrar": "node scripts/migrar-wordpress.mjs"
   },
   "dependencies": {
+    "@fontsource-variable/plus-jakarta-sans": "^5.3.0",
     "@fontsource/open-sans": "^5.3.0",
     "astro": "^5.18.2"
   },

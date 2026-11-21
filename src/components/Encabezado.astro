@@ -1,46 +1,57 @@
 ---
 import menu from '../data/menu.json';
 import sitio from '../data/sitio.json';
+import Icono from './Iconos.astro';
 import { url, esExterno } from '../lib/util';
 const actual = Astro.url.pathname;
 const activo = (e: string) => !esExterno(e) && actual === url(e);
+const seccionActiva = (item: (typeof menu.items)[number]) => activo(item.enlace) || item.submenu?.some((s) => activo(s.enlace));
+const ext = (e: string) => (esExterno(e) ? { target: '_blank', rel: 'noopener' } : {});
 const instagram = sitio.redes.find((r) => /instagram/i.test(r.url))?.url;
 const youtube = sitio.redes.find((r) => /youtube/i.test(r.url))?.url;
+// La última opción del menú (Admisión) se destaca como botón.
+const principales = menu.items.slice(0, -1);
+const llamado = menu.items.at(-1);
 ---
+<div class="barra-superior">
+  <div class="contenedor">
+    <span><Icono nombre="ubicacion" tamano={15} /> {sitio.direccion}, {sitio.comuna}, {sitio.ciudad}</span>
+    <a href={`tel:${sitio.telefono.replace(/\s/g, '')}`}><Icono nombre="telefono" tamano={15} /> {sitio.telefono}</a>
+    <span class="barra-redes">
+      {instagram && <a href={instagram} target="_blank" rel="noopener" aria-label="Instagram"><Icono nombre="instagram" tamano={16} /></a>}
+      {youtube && <a href={youtube} target="_blank" rel="noopener" aria-label="YouTube"><Icono nombre="youtube" tamano={17} /></a>}
+    </span>
+  </div>
+</div>
 <header class="cabecera">
-  <a class="logo" href={url('/')}>
-    <img src={url('/uploads/2025/01/cropped-logo-240x100-1.png')} alt={sitio.nombre} width="240" height="100" />
-  </a>
-  <nav class="menu" aria-label="Menú principal">
-    <button class="menu-boton" type="button" aria-expanded="false" aria-controls="menu-lista">
-      <span class="menu-icono" aria-hidden="true"></span> Menú
+  <div class="contenedor cabecera-fila">
+    <a class="logo" href={url('/')}>
+      <img src={url('/uploads/2025/01/cropped-logo-240x100-1.png')} alt={sitio.nombre} width="240" height="100" />
+    </a>
+    <button class="menu-boton" type="button" aria-expanded="false" aria-controls="menu-lista" aria-label="Abrir menú">
+      <span class="menu-icono" aria-hidden="true"></span>
     </button>
-    <ul id="menu-lista" class="menu-lista">
-      {menu.items.map((item) => (
-        <li class:list={['menu-item', { 'tiene-sub': item.submenu?.length }]}>
-          <a href={url(item.enlace)} aria-current={activo(item.enlace) ? 'page' : undefined}
-             {...(esExterno(item.enlace) ? { target: '_blank', rel: 'noopener' } : {})}>{item.texto}</a>
-          {item.submenu?.length > 0 && (
-            <>
-              <button class="sub-boton" type="button" aria-expanded="false" aria-label={`Abrir ${item.texto}`}></button>
-              <ul class="submenu">
-                {item.submenu.map((s) => (
-                  <li><a href={url(s.enlace)} aria-current={activo(s.enlace) ? 'page' : undefined}
-                         {...(esExterno(s.enlace) ? { target: '_blank', rel: 'noopener' } : {})}>{s.texto}</a></li>
-                ))}
-              </ul>
-            </>
-          )}
-        </li>
-      ))}
-      {instagram && <li class="menu-item icono"><a href={instagram} target="_blank" rel="noopener" aria-label="Instagram">
-        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2zm0 1.8c-3.1 0-3.5 0-4.7.1-1.1.1-1.7.2-2.1.4-.5.2-.9.4-1.3.8-.4.4-.6.8-.8 1.3-.2.4-.3 1-.4 2.1C2.6 9.9 2.6 10.3 2.6 12s0 2.1.1 3.3c.1 1.1.2 1.7.4 2.1.2.5.4.9.8 1.3.4.4.8.6 1.3.8.4.2 1 .3 2.1.4 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c1.1-.1 1.7-.2 2.1-.4.5-.2.9-.4 1.3-.8.4-.4.6-.8.8-1.3.2-.4.3-1 .4-2.1.1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c-.1-1.1-.2-1.7-.4-2.1-.2-.5-.4-.9-.8-1.3-.4-.4-.8-.6-1.3-.8-.4-.2-1-.3-2.1-.4C15.5 4 15.1 4 12 4zm0 3.1a4.9 4.9 0 1 1 0 9.8 4.9 4.9 0 0 1 0-9.8zm0 8a3.1 3.1 0 1 0 0-6.2 3.1 3.1 0 0 0 0 6.2zm6.2-8.2a1.1 1.1 0 1 1-2.3 0 1.1 1.1 0 0 1 2.3 0z"/></svg>
-      </a></li>}
-      {youtube && <li class="menu-item icono"><a href={youtube} target="_blank" rel="noopener" aria-label="YouTube">
-        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z"/></svg>
-      </a></li>}
-    </ul>
-  </nav>
+    <nav class="menu" aria-label="Menú principal">
+      <ul id="menu-lista" class="menu-lista">
+        {principales.map((item) => (
+          <li class:list={['menu-item', { 'tiene-sub': item.submenu?.length, activo: seccionActiva(item) }]}>
+            <a href={url(item.enlace)} aria-current={activo(item.enlace) ? 'page' : undefined} {...ext(item.enlace)}>{item.texto}</a>
+            {item.submenu?.length > 0 && (
+              <>
+                <button class="sub-boton" type="button" aria-expanded="false" aria-label={`Abrir ${item.texto}`}></button>
+                <ul class="submenu">
+                  {item.submenu.map((s) => (
+                    <li><a href={url(s.enlace)} aria-current={activo(s.enlace) ? 'page' : undefined} {...ext(s.enlace)}>{s.texto}</a></li>
+                  ))}
+                </ul>
+              </>
+            )}
+          </li>
+        ))}
+        {llamado && <li class="menu-item menu-llamado"><a href={url(llamado.enlace)} {...ext(llamado.enlace)}>{llamado.texto}</a></li>}
+      </ul>
+    </nav>
+  </div>
 </header>
 <script>
   const boton = document.querySelector<HTMLButtonElement>('.menu-boton');
@@ -48,6 +59,7 @@ const youtube = sitio.redes.find((r) => /youtube/i.test(r.url))?.url;
   boton?.addEventListener('click', () => {
     const abierto = boton.getAttribute('aria-expanded') === 'true';
     boton.setAttribute('aria-expanded', String(!abierto));
+    boton.setAttribute('aria-label', abierto ? 'Abrir menú' : 'Cerrar menú');
     lista?.classList.toggle('abierto', !abierto);
   });
   document.querySelectorAll<HTMLButtonElement>('.sub-boton').forEach((b) =>
@@ -57,4 +69,6 @@ const youtube = sitio.redes.find((r) => /youtube/i.test(r.url))?.url;
       b.parentElement?.classList.toggle('sub-abierto', !abierto);
     })
   );
+  const cabecera = document.querySelector('.cabecera');
+  addEventListener('scroll', () => cabecera?.classList.toggle('con-sombra', scrollY > 40), { passive: true });
 </script>

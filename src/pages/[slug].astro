@@ -2,6 +2,8 @@
 import { getCollection, render } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Lateral from '../components/Lateral.astro';
+import CabeceraPagina from '../components/CabeceraPagina.astro';
+import Icono from '../components/Iconos.astro';
 import menu from '../data/menu.json';
 import { url, esExterno, fechaLarga, CATEGORIAS } from '../lib/util';
 
@@ -18,24 +20,27 @@ const { tipo, entrada } = Astro.props;
 const { Content } = await render(entrada);
 const vacia = !entrada.body?.trim();
 const data = entrada.data as any;
-// Páginas sin texto que son una sección del menú: se muestran sus subpáginas.
-const seccion = menu.items.find((i) => i.enlace === `/${entrada.id}/`);
+const ruta = `/${entrada.id}/`;
+// Sección del menú a la que pertenece la página (para las migas y las subpáginas).
+const seccion = menu.items.find((i) => i.enlace === ruta);
+const padre = menu.items.find((i) => i.submenu?.some((s) => s.enlace === ruta) && i.enlace !== ruta);
 const subpaginas = seccion?.submenu ?? [];
+const migas = tipo === 'noticia'
+  ? [{ texto: CATEGORIAS[data.categoria], enlace: `/category/${data.categoria}/` }]
+  : padre ? [{ texto: padre.texto, enlace: padre.enlace }] : [];
 const resumen = data.resumen || `${data.titulo} – Colegio Marina de Chile`;
 ---
 <Base titulo={data.titulo} descripcion={resumen} imagen={data.imagen}>
-  <div class="con-lateral">
+  <CabeceraPagina titulo={data.titulo} migas={migas}>
+    {tipo === 'noticia' && (
+      <p class="meta meta-clara">
+        <span class={`etiqueta cat-${data.categoria}`}>{CATEGORIAS[data.categoria]}</span>
+        <time datetime={data.fecha.toISOString().slice(0, 10)}>{fechaLarga(data.fecha)}</time>
+      </p>
+    )}
+  </CabeceraPagina>
+  <div class="contenedor con-lateral">
     <article class="entrada">
-      <header class="entrada-cabecera">
-        <h1>{data.titulo}</h1>
-        {tipo === 'noticia' && (
-          <p class="meta">
-            <time datetime={data.fecha.toISOString().slice(0, 10)}>{fechaLarga(data.fecha)}</time>
-            <a href={url(`/category/${data.categoria}/`)}>{CATEGORIAS[data.categoria]}</a>
-          </p>
-        )}
-      </header>
-
       {tipo === 'noticia' && data.imagen && !entrada.body?.includes(data.imagen) && (
         <img class="entrada-imagen" src={url(data.imagen)} alt="" />
       )}
@@ -43,7 +48,7 @@ const resumen = data.resumen || `${data.titulo} – Colegio Marina de Chile`;
       {data.documento && (
         <div class="documento">
           <object data={url(data.documento)} type="application/pdf" aria-label={data.titulo}></object>
-          <p class="parrafo-boton"><a class="boton" href={url(data.documento)} target="_blank" rel="noopener">Descargar {data.titulo} (PDF)</a></p>
+          <p class="parrafo-boton"><a class="boton" href={url(data.documento)} target="_blank" rel="noopener"><Icono nombre="pdf" tamano={18} /> Descargar {data.titulo} (PDF)</a></p>
         </div>
       )}
 
@@ -51,7 +56,11 @@ const resumen = data.resumen || `${data.titulo} – Colegio Marina de Chile`;
         <Content />
         {vacia && !data.documento && subpaginas.length > 0 && (
           <ul class="subpaginas">
-            {subpaginas.map((s) => <li><a href={url(s.enlace)} {...(esExterno(s.enlace) ? { target: '_blank', rel: 'noopener' } : {})}>{s.texto}</a></li>)}
+            {subpaginas.map((s) => (
+              <li><a href={url(s.enlace)} {...(esExterno(s.enlace) ? { target: '_blank', rel: 'noopener' } : {})}>
+                {s.texto} <Icono nombre={esExterno(s.enlace) ? 'enlace' : 'flecha'} tamano={18} />
+              </a></li>
+            ))}
           </ul>
         )}
         {vacia && !data.documento && subpaginas.length === 0 && (

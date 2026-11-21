@@ -1,7 +1,7 @@
 ---
 import '@fontsource/open-sans/400.css';
 import '@fontsource/open-sans/600.css';
-import '@fontsource/open-sans/700.css';
+import '@fontsource-variable/plus-jakarta-sans/wght.css';
 import '../styles/sitio.css';
 import Encabezado from '../components/Encabezado.astro';
 import Pie from '../components/Pie.astro';
@@ -27,16 +27,14 @@ const imagenSocial = new URL(url(imagen || '/uploads/2024/07/Frontis-colegio-mde
   <meta property="og:description" content={descripcion} />
   <meta property="og:image" content={imagenSocial} />
   <meta property="og:locale" content="es_CL" />
-  <meta name="theme-color" content="#204070" />
+  <meta name="theme-color" content="#1b3763" />
 </head>
 <body>
   <a class="saltar" href="#contenido">Ir al contenido</a>
-  <div class="hoja">
-    <Encabezado />
-    <main id="contenido">
-      <slot />
-    </main>
-  </div>
+  <Encabezado />
+  <main id="contenido">
+    <slot />
+  </main>
   <Pie />
 </body>
 </html>
