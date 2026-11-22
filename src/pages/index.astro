@@ -1,6 +1,5 @@
 ---
 import Base from '../layouts/Base.astro';
-import CabeceraPagina from '../components/CabeceraPagina.astro';
 import Icono from '../components/Iconos.astro';
 import sitio from '../data/sitio.json';
 import { getCollection } from 'astro:content';
@@ -16,9 +15,6 @@ const destacadas = [...paginas, ...noticias].map((e) => ({
 const ext = (e: string) => (esExterno(e) ? { target: '_blank', rel: 'noopener' } : {});
 ---
 <Base>
-  <CabeceraPagina titulo={sitio.nombre} inicio>
-    <p class="cabecera-lema">{sitio.lema}</p>
-  </CabeceraPagina>
 
   {destacadas.length > 0 && (
     <section class="portada" aria-label="Destacados" aria-roledescription="carrusel">

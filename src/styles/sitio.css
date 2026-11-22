@@ -217,7 +217,6 @@ h1, h2, h3 { font-family: var(--titulos); line-height: 1.2; color: var(--azul); 
 /* ---------- Páginas interiores ---------- */
 .cabecera-pagina { background: radial-gradient(circle at 100% 0, rgba(242,194,48,.18), transparent 40%), linear-gradient(120deg, var(--azul), var(--azul-medio)); color: #dfe7f5; padding: 44px 0 48px; }
 .cabecera-pagina h1 { color: #fff; margin: 8px 0 0; font-size: clamp(28px, 3.6vw, 42px); max-width: 900px; }
-.cabecera-lema { margin: 8px 0 0; color: var(--amarillo); font: 600 18px var(--titulos); }
 .migas { display: flex; flex-wrap: wrap; gap: 8px; font-size: 14px; }
 .migas a { color: #c9d5ea; text-decoration: none; }
 .migas a:hover { color: #fff; text-decoration: underline; }

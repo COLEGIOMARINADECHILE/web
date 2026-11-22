@@ -1,16 +1,14 @@
 ---
 import { url } from '../lib/util';
-interface Props { titulo: string; migas?: { texto: string; enlace: string }[]; inicio?: boolean }
-const { titulo, migas = [], inicio = false } = Astro.props;
+interface Props { titulo: string; migas?: { texto: string; enlace: string }[] }
+const { titulo, migas = [] } = Astro.props;
 ---
 <section class="cabecera-pagina">
   <div class="contenedor">
-    {!inicio && (
-      <nav class="migas" aria-label="Ruta">
-        <a href={url('/')}>Inicio</a>
-        {migas.map((m) => <><span aria-hidden="true">/</span><a href={url(m.enlace)}>{m.texto}</a></>)}
-      </nav>
-    )}
+    <nav class="migas" aria-label="Ruta">
+      <a href={url('/')}>Inicio</a>
+      {migas.map((m) => <><span aria-hidden="true">/</span><a href={url(m.enlace)}>{m.texto}</a></>)}
+    </nav>
     <h1>{titulo}</h1>
     <slot />
   </div>
