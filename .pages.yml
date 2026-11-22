@@ -19,6 +19,7 @@ content:
       - { name: titulo, label: Título, type: string, required: true }
       - { name: imagen, label: Imagen, type: image, description: "Se usa en el carrusel, en las tarjetas de la portada y al compartir en redes." }
       - { name: resumen, label: Resumen, type: text, description: "Texto corto para el carrusel y para Google." }
+      - { name: reune, label: Reunir otras páginas (opcional), type: reference, options: { collection: paginas, search: titulo, value: "{name}", label: "{titulo}", multiple: true }, description: "Muestra estas páginas completas, una tras otra, debajo del contenido. Ej.: Reglamentos y protocolos." }
       - { name: body, label: Contenido, type: rich-text }
 
   # 2. Portada

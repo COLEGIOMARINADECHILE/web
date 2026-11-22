@@ -421,3 +421,10 @@ h1, h2, h3 { font-family: var(--titulos); line-height: 1.2; color: var(--azul); 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* ---------- Páginas que reúnen otras (reglamentos, planes) ---------- */
+.indice-secciones { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 8px; }
+.indice-secciones a { padding: 8px 14px; border: 1px solid var(--borde); border-radius: 2px; background: #fff; color: var(--azul); text-decoration: none; font: 600 14px var(--titulos); }
+.indice-secciones a:hover { background: var(--azul-claro); border-color: var(--azul-medio); }
+.seccion-reunida { padding-top: 8px; margin-top: 32px; border-top: 1px solid var(--borde); scroll-margin-top: 100px; }
+.seccion-reunida > h2 { margin-top: 24px; }

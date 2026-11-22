@@ -1,10 +1,10 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection, getEntry, render } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import CabeceraPagina from '../components/CabeceraPagina.astro';
 import Icono from '../components/Iconos.astro';
 import { menuPrincipal } from '../lib/menu';
-import { url, esExterno, fechaLarga, CATEGORIAS } from '../lib/util';
+import { url, esExterno, fechaLarga, CATEGORIAS, idDe } from '../lib/util';
 
 export async function getStaticPaths() {
   const noticias = await getCollection('noticias', (n) => !n.data.borrador);
@@ -17,8 +17,15 @@ export async function getStaticPaths() {
 
 const { tipo, entrada } = Astro.props;
 const { Content } = await render(entrada);
-const vacia = !entrada.body?.trim();
 const data = entrada.data as any;
+// Una página puede reunir otras (ej. «Reglamentos y protocolos»): se muestran como secciones, con un índice arriba.
+const secciones = tipo === 'pagina' && data.reune?.length
+  ? (await Promise.all((data.reune as string[]).map(async (ref) => {
+      const e = idDe(ref) ? await getEntry('paginas', idDe(ref)) : undefined;
+      return e ? { id: e.id, titulo: e.data.titulo, vacia: !e.body?.trim(), Content: (await render(e)).Content } : null;
+    }))).filter((x) => x !== null)
+  : [];
+const vacia = !entrada.body?.trim() && secciones.length === 0;
 const ruta = `/${entrada.id}/`;
 // Sección del menú a la que pertenece la página (para las migas y las subpáginas).
 const menu = await menuPrincipal();
@@ -54,6 +61,21 @@ const resumen = data.resumen || `${data.titulo} – Colegio Marina de Chile`;
 
       <div class="contenido">
         <Content />
+        {secciones.length > 0 && (
+          <>
+            <nav class="indice-secciones" aria-label="En esta página">
+              {secciones.map((s) => <a href={`#${s.id}`}>{s.titulo}</a>)}
+            </nav>
+            {secciones.map((s) => (
+              <section class="seccion-reunida" id={s.id}>
+                <h2>{s.titulo}</h2>
+                {s.vacia
+                  ? <p class="aviso">Estamos actualizando este documento. Pronto estará disponible aquí.</p>
+                  : <s.Content />}
+              </section>
+            ))}
+          </>
+        )}
         {vacia && !data.documento && subpaginas.length > 0 && (
           <ul class="subpaginas">
             {subpaginas.map((s) => (

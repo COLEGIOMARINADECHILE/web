@@ -21,6 +21,7 @@ const paginas = defineCollection({
     titulo: z.string(),
     imagen: z.string().optional().nullable(),
     resumen: z.string().optional().nullable(),
+    reune: z.array(z.string()).optional().nullable(),
     destacada: z.boolean().optional().default(false),
     orden: z.number().optional().nullable(),
   }),
