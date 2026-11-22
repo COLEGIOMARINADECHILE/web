@@ -175,3 +175,19 @@ content:
         type: object
         fields:
           - { name: usuario, label: Usuario (sin @), type: string }
+
+  # 5. Enlaces permanentes (atajos)
+  - name: redirecciones
+    label: "5. Enlaces permanentes"
+    type: file
+    path: src/data/redirecciones.json
+    description: "Direcciones cortas que llevan a otra página. Ej.: atajo «sae» → colegiomarinadechile.cl/sae abre el Sistema de Admisión Escolar. Si el atajo coincide con una página del sitio, el atajo tiene prioridad."
+    fields:
+      - name: redirecciones
+        label: Enlaces
+        type: object
+        list: true
+        fields:
+          - { name: atajo, label: "Atajo (lo que va después de colegiomarinadechile.cl/)", type: string, required: true, description: "Solo letras, números y guiones. Ej.: sae, matricula, reunion-apoderados." }
+          - { name: destino, label: Lleva a, type: string, required: true, description: "Una página del sitio (ej. /admision/) o una dirección completa (https://...)." }
+          - { name: nota, label: Nota interna (opcional), type: string, description: "Para recordar para qué es. No se muestra en el sitio." }

@@ -4,11 +4,14 @@ import Base from '../layouts/Base.astro';
 import CabeceraPagina from '../components/CabeceraPagina.astro';
 import Icono from '../components/Iconos.astro';
 import { menuPrincipal } from '../lib/menu';
-import { url, esExterno, fechaLarga, CATEGORIAS, idDe } from '../lib/util';
+import { url, esExterno, fechaLarga, CATEGORIAS, idDe, normalizarAtajo } from '../lib/util';
+import { redirecciones } from '../data/redirecciones.json';
 
 export async function getStaticPaths() {
-  const noticias = await getCollection('noticias', (n) => !n.data.borrador);
-  const paginas = await getCollection('paginas');
+  // Los enlaces permanentes («5. Enlaces permanentes» en el CMS) tienen prioridad sobre páginas con el mismo nombre.
+  const atajos = new Set((redirecciones as { atajo: string; destino: string }[]).filter((r) => r.destino?.trim()).map((r) => normalizarAtajo(r.atajo)));
+  const noticias = await getCollection('noticias', (n) => !n.data.borrador && !atajos.has(n.id));
+  const paginas = await getCollection('paginas', (p) => !atajos.has(p.id));
   return [
     ...noticias.map((e) => ({ params: { slug: e.id }, props: { tipo: 'noticia' as const, entrada: e } })),
     ...paginas.map((e) => ({ params: { slug: e.id }, props: { tipo: 'pagina' as const, entrada: e } })),

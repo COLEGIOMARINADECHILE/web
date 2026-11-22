@@ -50,3 +50,8 @@ export const numeroCircular = (titulo: string) => titulo.match(/n\s*[°º.]?\s*(
 /** Tema de una circular sin el prefijo «Circular N°18/2026:». Si no queda nada, el título completo. */
 export const temaCircular = (titulo: string) =>
   titulo.replace(/^circular\s*n\s*[°º.]?\s*\d+(\s*\/\s*\d{4})?\s*[:\-–]?\s*/i, '').trim() || titulo;
+
+/** Atajo de un enlace permanente: «/Docentes/» o «docentes» → «docentes». Solo letras, números y guiones. */
+export const normalizarAtajo = (atajo?: string | null) =>
+  (atajo ?? '').trim().toLowerCase().replace(/^\/+|\/+$/g, '').normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '');

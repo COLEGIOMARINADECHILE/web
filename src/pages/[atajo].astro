@@ -1,0 +1,31 @@
+---
+// Enlaces permanentes (atajos): colegiomarinadechile.cl/<atajo> lleva a otra dirección.
+// Se administran en Pages CMS, en «5. Enlaces permanentes» (src/data/redirecciones.json).
+// Si un atajo coincide con una página o noticia, gana el atajo.
+import { redirecciones } from '../data/redirecciones.json';
+import { url, normalizarAtajo } from '../lib/util';
+
+export function getStaticPaths() {
+  return (redirecciones as { atajo: string; destino: string }[])
+    .map((r) => ({ atajo: normalizarAtajo(r.atajo), destino: (r.destino ?? '').trim() }))
+    // Solo direcciones internas («/…») o web («https://…», «http://…»): nunca javascript: u otros esquemas.
+    .filter((r) => r.atajo && /^(\/(?!\/)|https?:\/\/)/i.test(r.destino))
+    .map((r) => ({ params: { atajo: r.atajo }, props: { destino: r.destino } }));
+}
+
+const destino = url(Astro.props.destino);
+---
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Redirigiendo…</title>
+  <meta name="robots" content="noindex" />
+  <meta http-equiv="refresh" content={`0; url=${destino}`} />
+  <link rel="canonical" href={destino} />
+  <script is:inline>location.replace(document.querySelector('link[rel="canonical"]').href);</script>
+</head>
+<body>
+  <p>Esta dirección cambió. Si no se abre sola, entra aquí: <a href={destino}>{destino}</a></p>
+</body>
+</html>

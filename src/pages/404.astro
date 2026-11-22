@@ -10,3 +10,10 @@ import { url } from '../lib/util';
     <p class="parrafo-boton"><a class="boton" href={url('/')}>Volver al inicio</a></p>
   </section>
 </Base>
+
+<script is:inline define:vars={{ base: url('/uploads/') }}>
+  // Direcciones del WordPress antiguo: /wp-content/uploads/AAAA/MM/archivo → /uploads/AAAA/MM/archivo
+  const m = location.pathname.match(/\/wp-content\/uploads\/(.+)$/);
+  if (m) location.replace(base + m[1]);
+</script>
+
