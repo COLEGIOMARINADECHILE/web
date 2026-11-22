@@ -302,6 +302,9 @@ h1, h2, h3 { font-family: var(--titulos); line-height: 1.2; color: var(--azul); 
 .pie-lema { margin: 2px 0 16px; color: var(--amarillo); font-size: 14px; }
 .pie address { font-style: normal; display: grid; gap: 8px; }
 .pie address span, .pie address a { display: inline-flex; align-items: center; gap: 8px; }
+/* Enlace discreto al panel de edición: casi invisible hasta pasar el mouse o enfocarlo */
+.pie-cms { margin-left: 10px; color: inherit !important; opacity: .12; text-decoration: none; transition: opacity .2s; }
+.pie-cms:hover, .pie-cms:focus-visible { opacity: 1; }
 .pie-final p { margin: 0; padding: 22px 0 28px; font-size: 13.5px; border-top: 1px solid rgba(255,255,255,.1); }
 
 /* ---------- Tablet ---------- */
