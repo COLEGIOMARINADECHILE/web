@@ -77,14 +77,34 @@ content:
       - { name: comuna, label: Comuna o sector, type: string }
       - { name: ciudad, label: Ciudad, type: string }
       - { name: telefono, label: Teléfono, type: string }
-      - name: destacados
-        label: Tarjetas bajo el carrusel (3)
+      - name: accesos
+        label: Tarjetas bajo el carrusel (5)
         type: object
-        list: true
         fields:
-          - { name: titulo, label: Título, type: string }
-          - { name: imagen, label: Imagen, type: image }
-          - { name: enlace, label: Enlace, type: string, description: "Página interna (ej. /admision/) o dirección completa (https://...)." }
+          - name: principal
+            label: Tarjeta grande (la primera)
+            type: object
+            fields:
+              - name: tipo
+                label: Qué mostrar
+                type: select
+                options:
+                  values:
+                    - { value: evento, label: Próximo gran evento }
+                    - { value: noticia, label: Una noticia o circular }
+                    - { value: pagina, label: Una página }
+              - name: noticia
+                label: Noticia (si eliges «Una noticia»)
+                type: reference
+                options: { collection: noticias, search: titulo, value: "{name}", label: "{titulo}" }
+              - name: pagina
+                label: Página (si eliges «Una página»)
+                type: reference
+                options: { collection: paginas, search: titulo, value: "{name}", label: "{titulo}" }
+          - name: paginas
+            label: Las otras 4 tarjetas (páginas)
+            type: reference
+            options: { collection: paginas, search: titulo, value: "{name}", label: "{titulo}", multiple: true, max: 4 }
       - name: proximoEvento
         label: Próximo gran evento (actualizar 1 vez a la semana)
         type: object

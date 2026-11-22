@@ -44,17 +44,17 @@ const ext = (e: string) => (esExterno(e) ? { target: '_blank', rel: 'noopener' }
 ---
 <section class="seccion seccion-suave actualidad">
   <div class="contenedor tres-bloques">
-    <article class="bloque evento">
-      {evento.imagen && <img class="evento-imagen" src={url(evento.imagen)} alt="" loading="lazy" decoding="async" width="600" height="338" />}
-      <div class="evento-cuerpo">
-        <span class="sobretitulo">Próximo gran evento</span>
-        <h2>{evento.titulo}</h2>
-        <p class="evento-dato"><Icono nombre="calendario" tamano={18} /> <span class="evento-fecha">{eventoFecha}{evento.hora && ` · ${evento.hora}`}</span></p>
-        {evento.lugar && <p class="evento-dato"><Icono nombre="ubicacion" tamano={18} /> {evento.lugar}</p>}
+    <section class="bloque">
+      <h2 class="bloque-titulo">Próximo gran evento</h2>
+      <div class="evento-marco">
+        {evento.imagen && <img class="evento-imagen" src={url(evento.imagen)} alt="" loading="lazy" decoding="async" width="600" height="338" />}
+        <h3>{evento.titulo}</h3>
+        <p class="evento-dato"><Icono nombre="calendario" tamano={17} /> <span class="evento-fecha">{eventoFecha}{evento.hora && ` · ${evento.hora}`}</span></p>
+        {evento.lugar && <p class="evento-dato"><Icono nombre="ubicacion" tamano={17} /> {evento.lugar}</p>}
         {evento.descripcion && <p class="evento-texto">{evento.descripcion}</p>}
-        {evento.enlace && <a class="boton boton-amarillo" href={url(evento.enlace)} {...ext(evento.enlace)}>Más información <Icono nombre="flecha" tamano={18} /></a>}
       </div>
-    </article>
+      {evento.enlace && <a class="enlace-flecha bloque-pie" href={url(evento.enlace)} {...ext(evento.enlace)}>Más información <Icono nombre="flecha" tamano={16} /></a>}
+    </section>
 
     <section class="bloque">
       <h2 class="bloque-titulo">Próximas actividades</h2>
@@ -81,20 +81,20 @@ const ext = (e: string) => (esExterno(e) ? { target: '_blank', rel: 'noopener' }
   </div>
 
   <div class="contenedor ultimas">
-    <header class="seccion-cabecera">
-      <div>
+    <header class="seccion-cabecera ultimas-cabecera">
+      <div class="ultimas-titulo">
         <h2 class="titulo-seccion">Últimas actividades</h2>
-        <p class="seccion-bajada">Noticias del colegio y publicaciones de <a href={`https://www.instagram.com/${sitio.instagram.usuario}/`} target="_blank" rel="noopener">@{sitio.instagram.usuario}</a></p>
+        <span class="seccion-bajada">Noticias y publicaciones</span>
       </div>
       <div class="ultimas-acciones">
-        <a class="enlace-flecha" href={url('/noticias/')}>Todas las noticias <Icono nombre="flecha" tamano={16} /></a>
+        <a class="boton boton-contorno" href={url('/noticias/')}><Icono nombre="noticia" tamano={18} /> Todas las noticias</a>
         <a class="boton boton-contorno" href={`https://www.instagram.com/${sitio.instagram.usuario}/`} target="_blank" rel="noopener"><Icono nombre="instagram" tamano={18} /> Seguir en Instagram</a>
       </div>
     </header>
     <div class="grilla-noticias grilla-ultimas">
       {ultimas.map((i) => i.tipo === 'noticia'
         ? <TarjetaNoticia noticia={i.noticia} />
-        : <iframe class="tarjeta-instagram" src={`https://www.instagram.com/p/${i.codigo}/embed`} title="Publicación de Instagram" loading="lazy"></iframe>)}
+        : <div class="tarjeta-instagram"><iframe src={`https://www.instagram.com/p/${i.codigo}/embed`} title="Publicación de Instagram" loading="lazy" scrolling="no"></iframe></div>)}
     </div>
   </div>
 </section>

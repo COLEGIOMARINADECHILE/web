@@ -5,23 +5,19 @@
   "comuna": "Lorenzo Arenas",
   "ciudad": "Concepción",
   "telefono": "+56 44 304 9268",
-  "destacados": [
-    {
-      "titulo": "Proceso Prematrícula 2027",
-      "imagen": "/uploads/2026/11/Captura-de-pantalla-2026-11-03-a-las-11.07.43.png",
-      "enlace": "/proceso-prematricula-2027/"
+  "accesos": {
+    "principal": {
+      "tipo": "evento",
+      "noticia": "",
+      "pagina": ""
     },
-    {
-      "titulo": "Admisión",
-      "imagen": "/uploads/2026/11/Matricula-2027-1020-x-400-px.png",
-      "enlace": "/admision/"
-    },
-    {
-      "titulo": "Calendario de Evaluaciones",
-      "imagen": "/uploads/2025/09/evaluaciones-1.png",
-      "enlace": "https://2ciclomarina.github.io/consultas/#calendario"
-    }
-  ],
+    "paginas": [
+      "proceso-prematricula-2027",
+      "admision",
+      "calendario-de-evaluaciones",
+      "talleres-extraescolares"
+    ]
+  },
   "proximoEvento": {
     "titulo": "Licenciatura Cuartos Medios 2026",
     "fecha": "",

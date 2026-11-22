@@ -91,32 +91,50 @@ h1, h2, h3 { font-family: var(--titulos); line-height: 1.2; color: var(--azul); 
 /* ---------- Portada: carrusel ---------- */
 .portada { padding: 40px 0 0; }
 .portada .contenedor { position: relative; }
-.carrusel-pista { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; border-radius: 3px; box-shadow: var(--sombra-alta); }
+.carrusel { position: relative; border-radius: 3px; box-shadow: var(--sombra-alta); overflow: hidden; }
+.carrusel-pista { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
 .carrusel-pista::-webkit-scrollbar { display: none; }
-.diapositiva { flex: 0 0 100%; scroll-snap-align: start; display: grid; grid-template-columns: 5fr 7fr; min-height: 420px; background: var(--azul); }
+/* La foto ocupa toda la diapositiva; el texto va encima en un panel azul semitransparente */
+.diapositiva { flex: 0 0 100%; scroll-snap-align: start; position: relative; display: flex; min-height: 440px; background: var(--azul); }
+.diapositiva-imagen { position: absolute; inset: 0; display: block; overflow: hidden; background: var(--azul-claro); }
+.diapositiva-imagen img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
 .diapositiva-texto {
-  padding: 48px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; color: #dfe7f5;
-  background: radial-gradient(circle at 0 100%, rgba(242,194,48,.18), transparent 50%), var(--azul);
+  position: relative; z-index: 1; width: min(46%, 540px); padding: 48px 48px 72px 84px;
+  display: flex; flex-direction: column; justify-content: center; align-items: flex-start; color: #e8eef8;
+  background: linear-gradient(90deg, rgba(27, 55, 99, .9) 70%, rgba(27, 55, 99, .78));
+  backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
 }
 .sobretitulo { font: 700 12px var(--titulos); text-transform: uppercase; letter-spacing: .14em; color: var(--amarillo); margin-bottom: 14px; }
 .diapositiva-texto h2 { margin: 0 0 16px; font-size: clamp(28px, 3.4vw, 42px); }
 .diapositiva-texto h2 a { color: #fff; text-decoration: none; }
 .diapositiva-texto p { margin: 0 0 28px; font-size: 16.5px; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
-.diapositiva-imagen { display: block; position: relative; overflow: hidden; background: #fff; }
-.diapositiva-imagen img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; }
-.carrusel-puntos { position: absolute; bottom: 20px; left: calc(var(--margen) + 48px); display: flex; gap: 8px; }
-.carrusel-puntos button { width: 18px; height: 4px; border-radius: 2px; border: 0; padding: 0; background: rgba(255,255,255,.35); cursor: pointer; transition: width .2s, background .2s; }
+.carrusel-flecha {
+  position: absolute; z-index: 2; top: 50%; transform: translateY(-50%); display: grid; place-items: center;
+  width: 44px; height: 44px; border-radius: 50%; border: 0; cursor: pointer;
+  background: rgba(255, 255, 255, .92); color: var(--azul); box-shadow: 0 2px 10px rgba(16, 34, 66, .25); transition: background .15s;
+}
+.carrusel-flecha:hover { background: var(--amarillo); }
+.carrusel-anterior { left: 20px; }
+.carrusel-anterior .icono { transform: rotate(180deg); }
+.carrusel-siguiente { right: 20px; }
+.carrusel-puntos { position: absolute; z-index: 2; bottom: 24px; left: 84px; display: flex; gap: 8px; }
+.carrusel-puntos button { width: 18px; height: 4px; border-radius: 2px; border: 0; padding: 0; background: rgba(255,255,255,.4); cursor: pointer; transition: width .2s, background .2s; }
 .carrusel-puntos button[aria-current] { width: 36px; background: var(--amarillo); }
 
 /* ---------- Accesos rápidos ---------- */
-.accesos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; margin-bottom: 64px; }
+.accesos { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 24px; margin-top: 40px; margin-bottom: 64px; }
 .acceso {
-  display: block; overflow: hidden; border-radius: var(--radio); background: #fff; border: 1px solid var(--borde);
+  display: flex; flex-direction: column; overflow: hidden; border-radius: var(--radio); background: #fff; border: 1px solid var(--borde);
   box-shadow: var(--sombra); text-decoration: none; transition: transform .2s, box-shadow .2s;
 }
+.acceso:first-child { grid-row: span 2; }
 .acceso:hover { transform: translateY(-4px); box-shadow: var(--sombra-alta); }
-.acceso img { display: block; width: 100%; aspect-ratio: 16 / 8; object-fit: cover; }
-.acceso-texto { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 16px 20px; font: 700 18px var(--titulos); color: var(--azul); }
+.acceso img, .acceso-sin-imagen { display: block; width: 100%; aspect-ratio: 16 / 8; object-fit: cover; }
+.acceso:first-child img, .acceso:first-child .acceso-sin-imagen { flex: 1; min-height: 0; aspect-ratio: auto; }
+.acceso-sin-imagen { display: grid; place-items: center; color: var(--azul-medio); background: linear-gradient(135deg, var(--azul-claro), #f7f9fd); }
+.acceso-texto { display: grid; grid-template-columns: 1fr auto; align-items: center; column-gap: 10px; padding: 14px 18px; font: 700 16.5px/1.3 var(--titulos); color: var(--azul); }
+.acceso-texto small { grid-column: 1 / -1; font: 700 11px var(--titulos); text-transform: uppercase; letter-spacing: .1em; color: var(--amarillo-oscuro); margin-bottom: 4px; }
+.acceso:first-child .acceso-texto { font-size: 22px; padding: 20px 24px; }
 .acceso-texto .icono { color: var(--azul-medio); transition: transform .2s; }
 .acceso:hover .acceso-texto .icono { transform: translateX(4px); }
 
@@ -190,21 +208,21 @@ h1, h2, h3 { font-family: var(--titulos); line-height: 1.2; color: var(--azul); 
 .bloque .agenda-texto { font-size: 14.5px; }
 .bloque .agenda-vacia { padding: 18px; font-size: 14.5px; background: var(--fondo-suave); }
 .bloque .lista-circulares a { padding: 10px 8px; }
-.evento { padding: 0; overflow: hidden; background: var(--azul); border-color: var(--azul); color: #dfe7f5; }
-.evento-imagen { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
-.evento-cuerpo { display: flex; flex-direction: column; align-items: flex-start; flex: 1; padding: 22px 24px 26px; background: radial-gradient(circle at 0 100%, rgba(242,194,48,.18), transparent 55%); }
-.evento .sobretitulo { margin-bottom: 8px; }
-.evento h2 { color: #fff; margin: 0 0 14px; font-size: 24px; }
-.evento-dato { display: flex; align-items: center; gap: 8px; margin: 0 0 6px; font-size: 15px; }
-.evento-dato .icono { color: var(--amarillo); }
+.evento-marco { padding: 16px; background: var(--fondo-suave); border: 1px dashed #c7d1e1; border-radius: var(--radio); }
+.evento-imagen { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--radio-chico); margin-bottom: 14px; }
+.evento-marco h3 { margin: 0 0 10px; font-size: 18px; }
+.evento-dato { display: flex; align-items: center; gap: 8px; margin: 0 0 4px; font-size: 14.5px; color: var(--texto-suave); }
+.evento-dato .icono { color: var(--azul-medio); }
 .evento-fecha::first-letter { text-transform: uppercase; }
-.evento-texto { margin: 8px 0 0; font-size: 15px; }
-.evento .boton { margin-top: auto; }
-.evento .evento-texto + .boton, .evento .evento-dato + .boton { margin-top: 18px; }
+.evento-texto { margin: 8px 0 0; font-size: 14.5px; }
 .ultimas { margin-top: 64px; }
-.ultimas-acciones { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
-.grilla-ultimas { align-items: stretch; }
-.tarjeta-instagram { width: 100%; height: 100%; min-height: 520px; border: 1px solid var(--borde); border-radius: var(--radio); background: #fff; box-shadow: var(--sombra); }
+.ultimas-titulo { display: flex; align-items: baseline; flex-wrap: wrap; column-gap: 16px; }
+.ultimas-titulo .seccion-bajada { margin: 0; font-size: 16px; }
+.ultimas-acciones { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.grilla-ultimas { align-items: start; }
+/* Instagram: se recorta el encabezado del embed (usuario y botón) y queda la imagen con los "me gusta" */
+.tarjeta-instagram { --ig-cabecera: 54px; position: relative; height: 600px; overflow: hidden; border: 1px solid var(--borde); border-radius: var(--radio); background: #fff; box-shadow: var(--sombra); }
+.tarjeta-instagram iframe { position: absolute; left: 0; top: calc(-1 * var(--ig-cabecera)); width: 100%; height: calc(100% + var(--ig-cabecera)); border: 0; }
 
 /* ---------- Redes ---------- */
 .redes { padding: 48px 0 56px; }
@@ -290,7 +308,11 @@ h1, h2, h3 { font-family: var(--titulos); line-height: 1.2; color: var(--azul); 
   .logo img { width: 140px; }
   .grilla-noticias { grid-template-columns: repeat(2, 1fr); }
   .tres-bloques { grid-template-columns: 1fr 1fr; }
-  .evento { grid-column: 1 / -1; }
+  .tres-bloques > :first-child { grid-column: 1 / -1; }
+  .diapositiva-texto { width: 60%; }
+  .accesos { grid-template-columns: 1fr 1fr; }
+  .acceso:first-child { grid-row: auto; grid-column: 1 / -1; }
+  .acceso:first-child img, .acceso:first-child .acceso-sin-imagen { aspect-ratio: 16 / 7; flex: none; }
   .pie-columnas { grid-template-columns: 1fr 1fr; }
 }
 
@@ -332,16 +354,19 @@ h1, h2, h3 { font-family: var(--titulos); line-height: 1.2; color: var(--azul); 
   .menu-llamado > a { justify-content: center; padding: 14px; }
 
   .portada { padding-top: 16px; }
-  .carrusel-pista { border-radius: 3px; }
-  .diapositiva { grid-template-columns: 1fr; min-height: 0; }
-  .diapositiva-imagen { order: -1; aspect-ratio: 16 / 9; }
-  .diapositiva-texto { padding: 24px 22px 52px; }
+  .diapositiva { flex-direction: column; min-height: 0; }
+  .diapositiva-imagen { position: relative; inset: auto; aspect-ratio: 16 / 9; }
+  .diapositiva-texto { width: 100%; padding: 24px 22px 52px; background: var(--azul); backdrop-filter: none; }
   .diapositiva-texto p { -webkit-line-clamp: 3; font-size: 15px; margin-bottom: 20px; }
-  .carrusel-puntos { left: calc(var(--margen) + 22px); bottom: 18px; }
-  .accesos { grid-template-columns: 1fr; gap: 14px; margin-top: 24px; }
-  .acceso { display: grid; grid-template-columns: 112px 1fr; align-items: center; }
-  .acceso img { height: 100%; aspect-ratio: auto; min-height: 76px; }
-  .acceso-texto { font-size: 16px; padding: 14px 16px; }
+  .carrusel-flecha { top: calc((100vw - 2 * var(--margen)) * 9 / 32); width: 38px; height: 38px; }
+  .carrusel-anterior { left: 10px; }
+  .carrusel-siguiente { right: 10px; }
+  .carrusel-puntos { left: 22px; bottom: 18px; }
+  .accesos { grid-template-columns: 1fr; gap: 14px; margin-top: 24px; margin-bottom: 44px; }
+  .acceso:first-child { grid-row: auto; }
+  .acceso:first-child img, .acceso:first-child .acceso-sin-imagen { aspect-ratio: 16 / 8; flex: none; }
+  .acceso:not(:first-child) { display: grid; grid-template-columns: 112px 1fr; align-items: center; }
+  .acceso:not(:first-child) img, .acceso:not(:first-child) .acceso-sin-imagen { height: 100%; aspect-ratio: auto; min-height: 76px; }
   .seccion { padding: 44px 0; }
   .dos-columnas { grid-template-columns: 1fr; gap: 44px; }
   .contenido-centrado { padding-top: 32px; padding-bottom: 48px; }
