@@ -5,6 +5,8 @@ import '@fontsource-variable/plus-jakarta-sans/wght.css';
 import '../styles/sitio.css';
 import Encabezado from '../components/Encabezado.astro';
 import Pie from '../components/Pie.astro';
+import Actualidad from '../components/Actualidad.astro';
+import Redes from '../components/Redes.astro';
 import sitio from '../data/sitio.json';
 import { url } from '../lib/util';
 
@@ -34,6 +36,8 @@ const imagenSocial = new URL(url(imagen || '/uploads/2024/07/Frontis-colegio-mde
   <Encabezado />
   <main id="contenido">
     <slot />
+    <Actualidad />
+    <Redes />
   </main>
   <Pie />
 </body>

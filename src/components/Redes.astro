@@ -1,0 +1,11 @@
+---
+import sitio from '../data/sitio.json';
+---
+<section class="seccion redes">
+  <div class="contenedor">
+    <h2 class="titulo-seccion">Síguenos en redes sociales</h2>
+    <ul class="chips">
+      {sitio.redes.map((r) => <li><a href={r.url} target="_blank" rel="noopener">{r.nombre}</a></li>)}
+    </ul>
+  </div>
+</section>

@@ -1,25 +1,9 @@
 ---
-import Icono from './Iconos.astro';
-import { url, fechaLarga, CATEGORIAS, type Noticia } from '../lib/util';
+import TarjetaNoticia from './TarjetaNoticia.astro';
+import type { Noticia } from '../lib/util';
 interface Props { noticias: Noticia[] }
 const { noticias } = Astro.props;
 ---
 <div class="grilla-noticias">
-  {noticias.map((n) => (
-    <article class="tarjeta">
-      <a class="tarjeta-imagen" href={url(`/${n.id}/`)} tabindex="-1" aria-hidden="true">
-        {n.data.imagen
-          ? <img src={url(n.data.imagen)} alt="" loading="lazy" decoding="async" width="400" height="225" />
-          : <span class={`tarjeta-sin-imagen cat-${n.data.categoria}`}><Icono nombre={n.data.documento ? 'pdf' : 'noticia'} tamano={40} /></span>}
-      </a>
-      <div class="tarjeta-cuerpo">
-        <p class="meta">
-          <a class={`etiqueta cat-${n.data.categoria}`} href={url(`/category/${n.data.categoria}/`)}>{CATEGORIAS[n.data.categoria]}</a>
-          <time datetime={n.data.fecha.toISOString().slice(0, 10)}>{fechaLarga(n.data.fecha)}</time>
-        </p>
-        <h3><a href={url(`/${n.id}/`)}>{n.data.titulo}</a></h3>
-        {n.data.resumen && <p class="tarjeta-resumen">{n.data.resumen}</p>}
-      </div>
-    </article>
-  ))}
+  {noticias.map((n) => <TarjetaNoticia noticia={n} />)}
 </div>

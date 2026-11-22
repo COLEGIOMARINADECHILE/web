@@ -1,0 +1,112 @@
+---
+// Bloque de actualidad que va al final de todas las páginas:
+// arriba el próximo gran evento, la agenda semanal y las circulares;
+// abajo las 3 últimas actividades (noticias y publicaciones de Instagram mezcladas por fecha).
+import sitio from '../data/sitio.json';
+import { actividades } from '../data/actividades.json';
+import Icono from './Iconos.astro';
+import TarjetaNoticia from './TarjetaNoticia.astro';
+import { url, esExterno, fechaLarga, noticiasOrdenadas, type Noticia } from '../lib/util';
+
+const noticias = await noticiasOrdenadas();
+const circulares = noticias.filter((n) => n.data.categoria === 'circulares').slice(0, 4);
+
+const dias = new Intl.DateTimeFormat('es-CL', { weekday: 'long', timeZone: 'UTC' });
+const meses = new Intl.DateTimeFormat('es-CL', { month: 'short', timeZone: 'UTC' });
+const fechaEvento = new Intl.DateTimeFormat('es-CL', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+const agenda = [...actividades]
+  .sort((a, b) => a.fecha.localeCompare(b.fecha))
+  .map((a) => {
+    const d = new Date(a.fecha + 'T00:00:00Z');
+    return { ...a, dia: d.getUTCDate(), mes: meses.format(d).replace('.', ''), semana: dias.format(d) };
+  });
+
+const evento = sitio.proximoEvento;
+const eventoFecha = evento.fecha ? fechaEvento.format(new Date(evento.fecha + 'T00:00:00Z')) : 'Fecha por confirmar';
+
+// La fecha de una publicación de Instagram viene dentro de su código (los primeros bits del ID son la hora).
+const ALFABETO = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+const fechaInstagram = (codigo: string) => {
+  let id = 0n;
+  for (const c of codigo) id = id * 64n + BigInt(ALFABETO.indexOf(c));
+  return new Date(Number((id >> 23n) + 1314220021721n));
+};
+type Item = { tipo: 'noticia'; fecha: Date; noticia: Noticia } | { tipo: 'instagram'; fecha: Date; codigo: string };
+const publicaciones: Item[] = sitio.instagram.publicaciones
+  .map((p) => p.match(/instagram\.com\/(?:p|reel)\/([^/?#]+)/)?.[1])
+  .filter((c): c is string => !!c)
+  .map((codigo) => ({ tipo: 'instagram', fecha: fechaInstagram(codigo), codigo }));
+const recientes: Item[] = noticias
+  .filter((n) => n.data.categoria !== 'circulares')
+  .map((noticia) => ({ tipo: 'noticia', fecha: noticia.data.fecha, noticia }));
+const ultimas = [...publicaciones, ...recientes].sort((a, b) => b.fecha.getTime() - a.fecha.getTime()).slice(0, 3);
+const ext = (e: string) => (esExterno(e) ? { target: '_blank', rel: 'noopener' } : {});
+---
+<section class="seccion seccion-suave actualidad">
+  <div class="contenedor tres-bloques">
+    <article class="bloque evento">
+      {evento.imagen && <img class="evento-imagen" src={url(evento.imagen)} alt="" loading="lazy" decoding="async" width="600" height="338" />}
+      <div class="evento-cuerpo">
+        <span class="sobretitulo">Próximo gran evento</span>
+        <h2>{evento.titulo}</h2>
+        <p class="evento-dato"><Icono nombre="calendario" tamano={18} /> <span class="evento-fecha">{eventoFecha}{evento.hora && ` · ${evento.hora}`}</span></p>
+        {evento.lugar && <p class="evento-dato"><Icono nombre="ubicacion" tamano={18} /> {evento.lugar}</p>}
+        {evento.descripcion && <p class="evento-texto">{evento.descripcion}</p>}
+        {evento.enlace && <a class="boton boton-amarillo" href={url(evento.enlace)} {...ext(evento.enlace)}>Más información <Icono nombre="flecha" tamano={18} /></a>}
+      </div>
+    </article>
+
+    <section class="bloque">
+      <h2 class="bloque-titulo">Próximas actividades</h2>
+      <ol class="agenda">
+        {agenda.map((a) => (
+          <li data-fecha={a.fecha}>
+            <span class="agenda-fecha"><b>{a.dia}</b>{a.mes}</span>
+            <span class="agenda-texto"><small>{a.semana}</small>{a.titulo}</span>
+          </li>
+        ))}
+      </ol>
+      <p class="agenda-vacia" hidden><Icono nombre="calendario" tamano={28} /> No hay actividades programadas esta semana. Revisa nuestras redes sociales para estar al día.</p>
+    </section>
+
+    <section class="bloque">
+      <h2 class="bloque-titulo">Circulares</h2>
+      <ul class="lista-circulares">
+        {circulares.map((c) => (
+          <li><a href={url(`/${c.id}/`)}><Icono nombre="pdf" /><span>{c.data.titulo}<small>{fechaLarga(c.data.fecha)}</small></span></a></li>
+        ))}
+      </ul>
+      <a class="enlace-flecha bloque-pie" href={url('/category/circulares/')}>Ver todas <Icono nombre="flecha" tamano={16} /></a>
+    </section>
+  </div>
+
+  <div class="contenedor ultimas">
+    <header class="seccion-cabecera">
+      <div>
+        <h2 class="titulo-seccion">Últimas actividades</h2>
+        <p class="seccion-bajada">Noticias del colegio y publicaciones de <a href={`https://www.instagram.com/${sitio.instagram.usuario}/`} target="_blank" rel="noopener">@{sitio.instagram.usuario}</a></p>
+      </div>
+      <div class="ultimas-acciones">
+        <a class="enlace-flecha" href={url('/noticias/')}>Todas las noticias <Icono nombre="flecha" tamano={16} /></a>
+        <a class="boton boton-contorno" href={`https://www.instagram.com/${sitio.instagram.usuario}/`} target="_blank" rel="noopener"><Icono nombre="instagram" tamano={18} /> Seguir en Instagram</a>
+      </div>
+    </header>
+    <div class="grilla-noticias grilla-ultimas">
+      {ultimas.map((i) => i.tipo === 'noticia'
+        ? <TarjetaNoticia noticia={i.noticia} />
+        : <iframe class="tarjeta-instagram" src={`https://www.instagram.com/p/${i.codigo}/embed`} title="Publicación de Instagram" loading="lazy"></iframe>)}
+    </div>
+  </div>
+</section>
+
+<script>
+  // Agenda: oculta lo que ya pasó y muestra solo las 4 próximas actividades.
+  const hoy = new Date().toISOString().slice(0, 10);
+  let visibles = 0;
+  document.querySelectorAll<HTMLElement>('.agenda li').forEach((li) => {
+    const mostrar = (li.dataset.fecha ?? '') >= hoy && visibles < 4;
+    li.hidden = !mostrar;
+    if (mostrar) visibles++;
+  });
+  if (!visibles) document.querySelector<HTMLElement>('.agenda-vacia')?.removeAttribute('hidden');
+</script>

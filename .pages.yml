@@ -82,6 +82,17 @@ content:
           - { name: titulo, label: Título, type: string }
           - { name: imagen, label: Imagen, type: image }
           - { name: enlace, label: Enlace, type: string, description: "Página interna (ej. /admision/) o dirección completa (https://...)." }
+      - name: proximoEvento
+        label: Próximo gran evento (actualizar 1 vez a la semana)
+        type: object
+        fields:
+          - { name: titulo, label: Título, type: string }
+          - { name: fecha, label: Fecha, type: date, description: "Si se deja vacía aparece «Fecha por confirmar»." }
+          - { name: hora, label: Hora, type: string, description: "Ej. 10:00 hrs." }
+          - { name: lugar, label: Lugar, type: string }
+          - { name: descripcion, label: Descripción breve, type: text }
+          - { name: imagen, label: Imagen, type: image }
+          - { name: enlace, label: Enlace (opcional), type: string, description: "Página interna (ej. /admision/) o dirección completa (https://...)." }
       - name: instagram
         label: Instagram (Últimas actividades)
         type: object
@@ -90,7 +101,7 @@ content:
           - { name: descripcion, label: Descripción, type: text }
           - { name: publicaciones, label: Publicaciones a mostrar (enlaces), type: string, list: true, description: "Copia el enlace de cada publicación de Instagram (ej. https://www.instagram.com/p/XXXX/)." }
       - name: redes
-        label: Redes sociales (barra lateral)
+        label: Redes sociales (final de cada página)
         type: object
         list: true
         fields:

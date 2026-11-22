@@ -1,7 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import Lateral from '../components/Lateral.astro';
 import CabeceraPagina from '../components/CabeceraPagina.astro';
 import Icono from '../components/Iconos.astro';
 import menu from '../data/menu.json';
@@ -39,7 +38,7 @@ const resumen = data.resumen || `${data.titulo} – Colegio Marina de Chile`;
       </p>
     )}
   </CabeceraPagina>
-  <div class="contenedor con-lateral">
+  <div class="contenedor contenido-centrado">
     <article class="entrada">
       {tipo === 'noticia' && data.imagen && !entrada.body?.includes(data.imagen) && (
         <img class="entrada-imagen" src={url(data.imagen)} alt="" />
@@ -68,6 +67,5 @@ const resumen = data.resumen || `${data.titulo} – Colegio Marina de Chile`;
         )}
       </div>
     </article>
-    <Lateral />
   </div>
 </Base>

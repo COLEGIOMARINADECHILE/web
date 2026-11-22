@@ -22,6 +22,15 @@
       "enlace": "https://2ciclomarina.github.io/consultas/#calendario"
     }
   ],
+  "proximoEvento": {
+    "titulo": "Licenciatura Cuartos Medios 2026",
+    "fecha": "",
+    "hora": "",
+    "lugar": "",
+    "descripcion": "",
+    "imagen": "/uploads/2024/07/Frontis-colegio-mdech-e1736613516883.jpg",
+    "enlace": ""
+  },
   "instagram": {
     "usuario": "colegio_mdech",
     "descripcion": "Instagram Oficial Colegio Marina de Chile. Av. Marina de Chile 2836, Lorenzo Arenas Concepción. 📞 44 304 9268",
@@ -33,22 +42,61 @@
     ]
   },
   "redes": [
-    { "nombre": "Instagram Oficial", "url": "https://www.instagram.com/colegio_mdech/" },
-    { "nombre": "Canal YouTube", "url": "https://www.youtube.com/@ColegioMarinadeChileOficial" },
-    { "nombre": "Instagram SLEP Andalién Sur", "url": "https://www.instagram.com/andaliensur/" },
-    { "nombre": "Instagram CRA", "url": "https://www.instagram.com/bibliomadechile/" },
-    { "nombre": "Instagram Talleres", "url": "https://www.instagram.com/extraescolar.mdch/" },
-    { "nombre": "Centro Estudiantes", "url": "https://www.instagram.com/cee_mdch_2025/" },
-    { "nombre": "Voz Periodística", "url": "https://www.instagram.com/vozperiodistica_mdech/" },
-    { "nombre": "Teatro", "url": "https://www.instagram.com/teatro.mdech/" }
+    {
+      "nombre": "Instagram Oficial",
+      "url": "https://www.instagram.com/colegio_mdech/"
+    },
+    {
+      "nombre": "Canal YouTube",
+      "url": "https://www.youtube.com/@ColegioMarinadeChileOficial"
+    },
+    {
+      "nombre": "Instagram SLEP Andalién Sur",
+      "url": "https://www.instagram.com/andaliensur/"
+    },
+    {
+      "nombre": "Instagram CRA",
+      "url": "https://www.instagram.com/bibliomadechile/"
+    },
+    {
+      "nombre": "Instagram Talleres",
+      "url": "https://www.instagram.com/extraescolar.mdch/"
+    },
+    {
+      "nombre": "Centro Estudiantes",
+      "url": "https://www.instagram.com/cee_mdch_2025/"
+    },
+    {
+      "nombre": "Voz Periodística",
+      "url": "https://www.instagram.com/vozperiodistica_mdech/"
+    },
+    {
+      "nombre": "Teatro",
+      "url": "https://www.instagram.com/teatro.mdech/"
+    }
   ],
   "pieInformacion": [
-    { "texto": "Horarios de Entrevista", "enlace": "/horarios-de-entrevista/" },
-    { "texto": "Horarios Cursos", "enlace": "/horarios-cursos/" }
+    {
+      "texto": "Horarios de Entrevista",
+      "enlace": "/horarios-de-entrevista/"
+    },
+    {
+      "texto": "Horarios Cursos",
+      "enlace": "/horarios-cursos/"
+    }
   ],
   "pieEnlaces": [
-    { "texto": "Plan Lector", "enlace": "/plan-lector/" },
-    { "texto": "Lista de Útiles", "enlace": "/lista-de-utiles/" },
-    { "texto": "Uniforme Oficial", "enlace": "/uniforme-oficial/" }
+    {
+      "texto": "Plan Lector",
+      "enlace": "/plan-lector/"
+    },
+    {
+      "texto": "Lista de Útiles",
+      "enlace": "/lista-de-utiles/"
+    },
+    {
+      "texto": "Uniforme Oficial",
+      "enlace": "/uniforme-oficial/"
+    }
   ]
 }
