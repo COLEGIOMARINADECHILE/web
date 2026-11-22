@@ -14,7 +14,12 @@ interface Props { portada?: boolean }
 const { portada = false } = Astro.props;
 
 const noticias = await noticiasOrdenadas();
-const circulares = noticias.filter((n) => n.data.categoria === 'circulares').slice(0, 4);
+// Circulares: número (de «Circular N°18/2026: …») y tema sin el prefijo, para mostrarlas como la agenda.
+const circulares = noticias.filter((n) => n.data.categoria === 'circulares').slice(0, 4).map((c) => {
+  const numero = c.data.titulo.match(/n\s*[°º.]?\s*(\d+)/i)?.[1];
+  const tema = c.data.titulo.replace(/^circular\s*n\s*[°º.]?\s*\d+(\s*\/\s*\d{4})?\s*[:\-–]?\s*/i, '').trim();
+  return { id: c.id, fecha: c.data.fecha, numero, tema: tema || c.data.titulo };
+});
 
 const dias = new Intl.DateTimeFormat('es-CL', { weekday: 'long', timeZone: 'UTC' });
 const meses = new Intl.DateTimeFormat('es-CL', { month: 'short', timeZone: 'UTC' });
@@ -75,13 +80,18 @@ const ext = (e: string) => (esExterno(e) ? { target: '_blank', rel: 'noopener' }
     </section>
 
     {portada ? <section class="bloque">
-      <h2 class="bloque-titulo">Circulares</h2>
-      <ul class="lista-circulares">
+      <div class="bloque-cabecera">
+        <h2 class="bloque-titulo">Circulares</h2>
+        <a class="enlace-flecha" href={url('/category/circulares/')}>Ver todas <Icono nombre="flecha" tamano={16} /></a>
+      </div>
+      <ul class="agenda circulares-lista">
         {circulares.map((c) => (
-          <li><a href={url(`/${c.id}/`)}><Icono nombre="pdf" /><span>{c.data.titulo}<small>{fechaLarga(c.data.fecha)}</small></span></a></li>
+          <li><a href={url(`/${c.id}/`)}>
+            <span class="circular-hoja" aria-hidden="true">{c.numero ? <><small>N°</small><b>{c.numero}</b></> : <Icono nombre="pdf" tamano={22} />}</span>
+            <span class="agenda-texto"><small>{fechaLarga(c.fecha)}</small>{c.numero && <span class="visualmente-oculto">Circular N°{c.numero}: </span>}{c.tema}</span>
+          </a></li>
         ))}
       </ul>
-      <a class="enlace-flecha bloque-pie" href={url('/category/circulares/')}>Ver todas <Icono nombre="flecha" tamano={16} /></a>
     </section> : <>
       <section class="bloque bloque-ultima">
         <h2 class="bloque-titulo">Última actividad</h2>
@@ -122,7 +132,7 @@ const ext = (e: string) => (esExterno(e) ? { target: '_blank', rel: 'noopener' }
   // Agenda: oculta lo que ya pasó y muestra solo las 4 próximas actividades.
   const hoy = new Date().toISOString().slice(0, 10);
   let visibles = 0;
-  document.querySelectorAll<HTMLElement>('.agenda li').forEach((li) => {
+  document.querySelectorAll<HTMLElement>('.agenda:not(.circulares-lista) li').forEach((li) => {
     const mostrar = (li.dataset.fecha ?? '') >= hoy && visibles < 4;
     li.hidden = !mostrar;
     if (mostrar) visibles++;

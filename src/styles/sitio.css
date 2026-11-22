@@ -205,6 +205,20 @@ h1, h2, h3 { font-family: var(--titulos); line-height: 1.2; color: var(--azul); 
 .bloque .agenda-texto { font-size: 14.5px; }
 .bloque .agenda-vacia { padding: 18px; font-size: 14.5px; background: var(--fondo-suave); }
 .bloque .lista-circulares a { padding: 10px 8px; }
+.bloque-cabecera { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.bloque-cabecera .enlace-flecha { margin-top: 6px; font-size: 14.5px; }
+/* Circulares con el mismo estilo que la agenda: recuadro pálido y una hoja amarilla con el número */
+.circulares-lista li { padding: 0; }
+.circulares-lista a { display: flex; align-items: center; gap: 14px; width: 100%; padding: 10px 12px; color: inherit; text-decoration: none; border-radius: var(--radio); }
+.circulares-lista a:hover { background: var(--azul-claro); }
+.circular-hoja {
+  position: relative; display: grid; place-items: center; align-content: center; flex-shrink: 0; width: 46px; height: 54px;
+  background: linear-gradient(225deg, #fff6d6 0 10px, var(--amarillo) 10px); border-radius: 2px;
+  color: var(--azul); font: 600 11px/1 var(--titulos);
+}
+.circular-hoja b { font-size: 20px; line-height: 1.05; }
+.circular-hoja small { font-size: 10px; letter-spacing: .04em; }
+.visualmente-oculto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .evento-marco { padding: 16px; background: var(--fondo-suave); border: 1px dashed #c7d1e1; border-radius: var(--radio); }
 .evento-imagen { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--radio-chico); margin-bottom: 14px; }
 .evento-marco h3 { margin: 0 0 10px; font-size: 18px; }
