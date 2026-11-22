@@ -10,6 +10,9 @@ export default defineConfig({
   site,
   base,
   trailingSlash: 'always',
+  // Los estilos van dentro de cada página: así una página guardada en caché nunca pide
+  // una hoja de estilos de una publicación anterior que ya no existe.
+  build: { inlineStylesheets: 'always' },
   markdown: {
     rehypePlugins: [[rehypeMch, { base }]],
   },
