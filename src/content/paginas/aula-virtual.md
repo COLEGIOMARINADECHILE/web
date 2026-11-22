@@ -1,5 +1,4 @@
 ---
-titulo: "Aula Virtual"
+titulo: Aula Virtual
+destacada: false
 ---
-
-
