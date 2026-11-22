@@ -23,9 +23,10 @@ const imagenSocial = new URL(url(imagen || '/uploads/2024/07/Frontis-colegio-mde
   <title>{tituloCompleto}</title>
   <meta name="description" content={descripcion} />
   <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site).href} />
-  <link rel="icon" href={url('/uploads/2026/11/favicon-70-32.png')} sizes="32x32" />
-  <link rel="icon" href={url('/uploads/2026/11/favicon-70-192.png')} sizes="192x192" />
-  <link rel="apple-touch-icon" href={url('/uploads/2026/11/favicon-70-180.png')} />
+  <link rel="icon" href={url('/favicon.ico?v=70')} sizes="any" />
+  <link rel="icon" href={url('/uploads/2026/11/favicon-70-32.png?v=70')} type="image/png" sizes="32x32" />
+  <link rel="icon" href={url('/uploads/2026/11/favicon-70-192.png?v=70')} type="image/png" sizes="192x192" />
+  <link rel="apple-touch-icon" href={url('/uploads/2026/11/favicon-70-180.png?v=70')} />
   <meta property="og:title" content={tituloCompleto} />
   <meta property="og:description" content={descripcion} />
   <meta property="og:image" content={imagenSocial} />
