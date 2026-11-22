@@ -3,7 +3,7 @@ import { getCollection, render } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import CabeceraPagina from '../components/CabeceraPagina.astro';
 import Icono from '../components/Iconos.astro';
-import menu from '../data/menu.json';
+import { menuPrincipal } from '../lib/menu';
 import { url, esExterno, fechaLarga, CATEGORIAS } from '../lib/util';
 
 export async function getStaticPaths() {
@@ -21,8 +21,9 @@ const vacia = !entrada.body?.trim();
 const data = entrada.data as any;
 const ruta = `/${entrada.id}/`;
 // Sección del menú a la que pertenece la página (para las migas y las subpáginas).
-const seccion = menu.items.find((i) => i.enlace === ruta);
-const padre = menu.items.find((i) => i.submenu?.some((s) => s.enlace === ruta) && i.enlace !== ruta);
+const menu = await menuPrincipal();
+const seccion = menu.find((i) => i.enlace === ruta);
+const padre = menu.find((i) => i.submenu?.some((s) => s.enlace === ruta) && i.enlace !== ruta);
 const subpaginas = seccion?.submenu ?? [];
 const migas = tipo === 'noticia'
   ? [{ texto: CATEGORIAS[data.categoria], enlace: `/category/${data.categoria}/` }]

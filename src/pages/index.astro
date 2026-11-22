@@ -1,35 +1,36 @@
 ---
 import Base from '../layouts/Base.astro';
 import Icono from '../components/Iconos.astro';
-import sitio from '../data/sitio.json';
-import { getCollection, getEntry } from 'astro:content';
-import { url, noticiasOrdenadas } from '../lib/util';
+import portada from '../data/portada.json';
+import { getEntry } from 'astro:content';
+import { url, idDe } from '../lib/util';
 
-// Carrusel: primero las páginas destacadas (por orden) y luego las noticias destacadas.
-const paginas = (await getCollection('paginas', (p) => p.data.destacada))
-  .sort((a, b) => (a.data.orden ?? 99) - (b.data.orden ?? 99));
-const noticias = (await noticiasOrdenadas()).filter((n) => n.data.destacada);
-const destacadas = [...paginas, ...noticias].map((e) => ({
-  id: e.id, data: e.data, sobretitulo: e.collection === 'paginas' ? 'Nuestro colegio' : 'Destacado',
-}));
+// Todo lo de la portada se elige en Pages CMS, en «Portada» (src/data/portada.json).
+type Ref = { tipo?: string; pagina?: string | null; noticia?: string | null };
 
-// Accesos: 5 tarjetas elegidas en Pages CMS. La primera (grande) puede ser el próximo evento,
-// una noticia o una página; las otras 4 son páginas.
-// Pages CMS guarda la referencia como nombre o ruta del archivo: nos quedamos con el nombre sin ".md".
-const idDe = (ref?: string | null) => (ref ?? '').split('/').pop()!.replace(/\.md$/, '');
+// Carrusel: páginas y noticias en el orden elegido.
+const destacadas = (await Promise.all((portada.carrusel as Ref[]).map(async (r) => {
+  const e = r.tipo === 'noticia'
+    ? (idDe(r.noticia) ? await getEntry('noticias', idDe(r.noticia)) : undefined)
+    : (idDe(r.pagina) ? await getEntry('paginas', idDe(r.pagina)) : undefined);
+  return e ? { id: e.id, data: e.data, sobretitulo: e.collection === 'paginas' ? 'Nuestro colegio' : 'Destacado' } : null;
+}))).filter((d): d is NonNullable<typeof d> => d !== null);
+
+// Tarjetas bajo el carrusel: la primera puede ser la próxima actividad, una noticia o una página;
+// las demás son páginas.
 type Acceso = { titulo: string; imagen?: string | null; enlace: string; etiqueta: string };
 const desdeEntrada = async (coleccion: 'paginas' | 'noticias', ref?: string | null, etiqueta = 'Nuestro colegio'): Promise<Acceso | null> => {
   const id = idDe(ref);
   const e = id ? await getEntry(coleccion, id) : undefined;
   return e ? { titulo: e.data.titulo, imagen: e.data.imagen, enlace: `/${e.id}/`, etiqueta } : null;
 };
-const { principal } = sitio.accesos;
-const evento = sitio.proximoEvento;
+const principal = portada.accesos.principal as Ref;
+const evento = portada.proximaActividad;
 const primero: Acceso | null =
   principal.tipo === 'noticia' ? await desdeEntrada('noticias', principal.noticia, 'Noticia')
   : principal.tipo === 'pagina' ? await desdeEntrada('paginas', principal.pagina, 'Destacado')
   : { titulo: evento.titulo, imagen: evento.imagen, enlace: evento.enlace || '/', etiqueta: 'Próxima actividad' };
-const resto = (await Promise.all(sitio.accesos.paginas.slice(0, 4).map((p) => desdeEntrada('paginas', p)))).filter(Boolean) as Acceso[];
+const resto = (await Promise.all(portada.accesos.paginas.slice(0, 4).map((p) => desdeEntrada('paginas', p)))).filter(Boolean) as Acceso[];
 const accesos = [primero, ...resto].filter(Boolean) as Acceso[];
 ---
 <Base portada>

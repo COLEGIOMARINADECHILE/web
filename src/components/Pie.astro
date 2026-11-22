@@ -2,6 +2,9 @@
 import sitio from '../data/sitio.json';
 import Icono from './Iconos.astro';
 import { url, esExterno } from '../lib/util';
+import { enlacesPie } from '../lib/menu';
+const informacion = await enlacesPie(sitio.pieInformacion);
+const interes = await enlacesPie(sitio.pieEnlaces);
 const anio = new Date().getFullYear();
 const ext = (e: string) => (esExterno(e) ? { target: '_blank', rel: 'noopener' } : {});
 ---
@@ -20,11 +23,11 @@ const ext = (e: string) => (esExterno(e) ? { target: '_blank', rel: 'noopener' }
     </section>
     <section>
       <h2>Información</h2>
-      <ul>{sitio.pieInformacion.map((l) => <li><a href={url(l.enlace)} {...ext(l.enlace)}>{l.texto}</a></li>)}</ul>
+      <ul>{informacion.map((l) => <li><a href={url(l.enlace)} {...ext(l.enlace)}>{l.texto}</a></li>)}</ul>
     </section>
     <section>
       <h2>Enlaces de interés</h2>
-      <ul>{sitio.pieEnlaces.map((l) => <li><a href={url(l.enlace)} {...ext(l.enlace)}>{l.texto}</a></li>)}</ul>
+      <ul>{interes.map((l) => <li><a href={url(l.enlace)} {...ext(l.enlace)}>{l.texto}</a></li>)}</ul>
     </section>
     <section>
       <h2>Síguenos</h2>

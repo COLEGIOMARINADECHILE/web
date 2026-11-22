@@ -1,8 +1,6 @@
 ---
 titulo: "Cifras y resultados"
 imagen: "/uploads/2025/08/IMG_5814-Large.jpeg"
-destacada: true
-orden: 2
 resumen: "70 años formando estudiantes en Concepción, de Transición Menor a 4° Medio, con 23 electivos y más de 10 talleres extraescolares."
 ---
 

@@ -5,8 +5,93 @@ media:
   output: /uploads
 
 content:
+  # 1. Páginas del sitio
+  - name: paginas
+    label: "1. Páginas"
+    type: collection
+    path: src/content/paginas
+    filename: "{primary}.md"
+    description: "Las páginas del colegio. Para que aparezcan en el menú, agrégalas en «4. Sitio: menú, pie y datos»."
+    view:
+      primary: titulo
+      fields: [titulo]
+    fields:
+      - { name: titulo, label: Título, type: string, required: true }
+      - { name: imagen, label: Imagen, type: image, description: "Se usa en el carrusel, en las tarjetas de la portada y al compartir en redes." }
+      - { name: resumen, label: Resumen, type: text, description: "Texto corto para el carrusel y para Google." }
+      - { name: body, label: Contenido, type: rich-text }
+
+  # 2. Portada
+  - name: portada
+    label: "2. Portada"
+    type: file
+    path: src/data/portada.json
+    description: "Qué se muestra en la portada: carrusel, tarjetas, próxima actividad, agenda y publicaciones de Instagram."
+    fields:
+      - name: carrusel
+        label: Carrusel (en este orden)
+        type: object
+        list: true
+        fields:
+          - name: tipo
+            label: Qué mostrar
+            type: select
+            options:
+              values:
+                - { value: pagina, label: Una página }
+                - { value: noticia, label: Una noticia o circular }
+          - { name: pagina, label: "Página (si elegiste «Una página»)", type: reference, options: { collection: paginas, search: titulo, value: "{name}", label: "{titulo}" } }
+          - { name: noticia, label: "Noticia (si elegiste «Una noticia»)", type: reference, options: { collection: noticias, search: titulo, value: "{name}", label: "{titulo}" } }
+      - name: accesos
+        label: Tarjetas bajo el carrusel (hasta 5)
+        type: object
+        fields:
+          - name: principal
+            label: Primera tarjeta
+            type: object
+            fields:
+              - name: tipo
+                label: Qué mostrar
+                type: select
+                options:
+                  values:
+                    - { value: evento, label: La próxima actividad }
+                    - { value: noticia, label: Una noticia o circular }
+                    - { value: pagina, label: Una página }
+              - { name: noticia, label: "Noticia (si elegiste «Una noticia»)", type: reference, options: { collection: noticias, search: titulo, value: "{name}", label: "{titulo}" } }
+              - { name: pagina, label: "Página (si elegiste «Una página»)", type: reference, options: { collection: paginas, search: titulo, value: "{name}", label: "{titulo}" } }
+          - name: paginas
+            label: Las otras tarjetas (hasta 4 páginas)
+            type: reference
+            options: { collection: paginas, search: titulo, value: "{name}", label: "{titulo}", multiple: true, max: 4 }
+      - name: proximaActividad
+        label: Próxima actividad (actualizar 1 vez a la semana)
+        type: object
+        fields:
+          - { name: titulo, label: Título, type: string }
+          - { name: fecha, label: Fecha, type: date, description: "Si se deja vacía aparece «Fecha por confirmar»." }
+          - { name: hora, label: Hora, type: string, description: "Ej. 10:00 hrs." }
+          - { name: lugar, label: Lugar, type: string }
+          - { name: descripcion, label: Descripción breve, type: text }
+          - { name: imagen, label: Imagen, type: image }
+          - { name: enlace, label: Enlace (opcional), type: string, description: "Página interna (ej. /licenciatura/) o dirección completa (https://...)." }
+      - name: actividades
+        label: Próximas actividades (agenda semanal)
+        type: object
+        list: true
+        description: "Las actividades con fecha pasada se ocultan solas. Se muestran las 4 siguientes."
+        fields:
+          - { name: fecha, label: Fecha, type: date, required: true }
+          - { name: titulo, label: Actividad, type: string, required: true }
+      - name: instagram
+        label: Publicaciones de Instagram (Últimas actividades)
+        type: string
+        list: true
+        description: "Copia el enlace de cada publicación (ej. https://www.instagram.com/p/XXXX/). Se mezclan con las noticias por fecha."
+
+  # 3. Noticias y circulares
   - name: noticias
-    label: Noticias y circulares
+    label: "3. Noticias y circulares"
     type: collection
     path: src/content/noticias
     filename: "{primary}.md"
@@ -29,138 +114,66 @@ content:
             - { value: noticias, label: Noticias }
             - { value: informacion, label: Información }
             - { value: circulares, label: Circulares }
-      - { name: imagen, label: Imagen principal, type: image, description: "Se muestra en la lista de noticias y en el carrusel de la portada." }
+      - { name: imagen, label: Imagen principal, type: image, description: "Se muestra en la lista de noticias y, si la eliges, en el carrusel." }
       - { name: documento, label: Documento PDF, type: file, description: "Para circulares: el PDF se muestra en la página con un botón de descarga." }
-      - { name: resumen, label: Resumen, type: text, description: "Texto corto para la lista de noticias. Si lo dejas vacío no se muestra resumen." }
-      - { name: destacada, label: Destacar en el carrusel de la portada, type: boolean, default: false }
+      - { name: resumen, label: Resumen, type: text, description: "Texto corto para la lista de noticias y el carrusel." }
       - { name: borrador, label: Borrador (no publicar todavía), type: boolean, default: false }
       - { name: body, label: Contenido, type: rich-text }
 
-  - name: paginas
-    label: Páginas
-    type: collection
-    path: src/content/paginas
-    filename: "{primary}.md"
-    view:
-      primary: titulo
-      fields: [titulo]
-    fields:
-      - { name: titulo, label: Título, type: string, required: true }
-      - { name: imagen, label: Imagen (redes sociales y carrusel), type: image }
-      - { name: destacada, label: Destacar en el carrusel, type: boolean }
-      - { name: orden, label: Orden en el carrusel, type: number, description: "1 aparece primero. Las páginas destacadas van antes que las noticias destacadas." }
-      - { name: resumen, label: Resumen para el carrusel, type: text }
-      - { name: body, label: Contenido, type: rich-text }
-
-  - name: actividades
-    label: Próximas actividades
-    type: file
-    path: src/data/actividades.json
-    description: "Agenda de la portada. Las actividades con fecha pasada se ocultan solas."
-    fields:
-      - name: actividades
-        label: Actividades
-        type: object
-        list: true
-        fields:
-          - { name: fecha, label: Fecha, type: date, required: true }
-          - { name: titulo, label: Actividad, type: string, required: true }
-
+  # 4. Datos del colegio, menú y pie de página
   - name: sitio
-    label: Portada y datos del colegio
+    label: "4. Sitio: menú, pie y datos"
     type: file
     path: src/data/sitio.json
     fields:
+      - name: menu
+        label: Menú principal
+        type: object
+        list: true
+        description: "La última opción se muestra como botón amarillo (hoy: Admisión)."
+        fields:
+          - { name: texto, label: Texto, type: string, description: "Si eliges una página y dejas esto vacío, se usa el título de la página." }
+          - { name: pagina, label: Página del sitio, type: reference, options: { collection: paginas, search: titulo, value: "{name}", label: "{titulo}" } }
+          - { name: enlace, label: "O una dirección (si no es una página)", type: string, description: "Ej. /category/circulares/, /noticias/ o https://... Se usa solo si no eliges una página." }
+          - name: submenu
+            label: Submenú
+            type: object
+            list: true
+            fields:
+              - { name: texto, label: Texto, type: string, description: "Si eliges una página y dejas esto vacío, se usa el título de la página." }
+              - { name: pagina, label: Página del sitio, type: reference, options: { collection: paginas, search: titulo, value: "{name}", label: "{titulo}" } }
+              - { name: enlace, label: "O una dirección (si no es una página)", type: string, description: "Ej. /category/circulares/, /noticias/ o https://... Se usa solo si no eliges una página." }
+      - name: pieInformacion
+        label: "Pie de página: Información"
+        type: object
+        list: true
+        fields:
+          - { name: texto, label: Texto, type: string, description: "Si eliges una página y dejas esto vacío, se usa el título de la página." }
+          - { name: pagina, label: Página del sitio, type: reference, options: { collection: paginas, search: titulo, value: "{name}", label: "{titulo}" } }
+          - { name: enlace, label: "O una dirección (si no es una página)", type: string, description: "Ej. /category/circulares/, /noticias/ o https://... Se usa solo si no eliges una página." }
+      - name: pieEnlaces
+        label: "Pie de página: Enlaces de interés"
+        type: object
+        list: true
+        fields:
+          - { name: texto, label: Texto, type: string, description: "Si eliges una página y dejas esto vacío, se usa el título de la página." }
+          - { name: pagina, label: Página del sitio, type: reference, options: { collection: paginas, search: titulo, value: "{name}", label: "{titulo}" } }
+          - { name: enlace, label: "O una dirección (si no es una página)", type: string, description: "Ej. /category/circulares/, /noticias/ o https://... Se usa solo si no eliges una página." }
+      - name: redes
+        label: Redes sociales
+        type: object
+        list: true
+        fields:
+          - { name: nombre, label: Nombre, type: string }
+          - { name: url, label: Enlace, type: string }
       - { name: nombre, label: Nombre del colegio, type: string }
       - { name: lema, label: Lema, type: string }
       - { name: direccion, label: Dirección, type: string }
       - { name: comuna, label: Comuna o sector, type: string }
       - { name: ciudad, label: Ciudad, type: string }
       - { name: telefono, label: Teléfono, type: string }
-      - name: accesos
-        label: Tarjetas bajo el carrusel (5)
-        type: object
-        fields:
-          - name: principal
-            label: Tarjeta grande (la primera)
-            type: object
-            fields:
-              - name: tipo
-                label: Qué mostrar
-                type: select
-                options:
-                  values:
-                    - { value: evento, label: Próxima actividad }
-                    - { value: noticia, label: Una noticia o circular }
-                    - { value: pagina, label: Una página }
-              - name: noticia
-                label: Noticia (si eliges «Una noticia»)
-                type: reference
-                options: { collection: noticias, search: titulo, value: "{name}", label: "{titulo}" }
-              - name: pagina
-                label: Página (si eliges «Una página»)
-                type: reference
-                options: { collection: paginas, search: titulo, value: "{name}", label: "{titulo}" }
-          - name: paginas
-            label: Las otras 4 tarjetas (páginas)
-            type: reference
-            options: { collection: paginas, search: titulo, value: "{name}", label: "{titulo}", multiple: true, max: 4 }
-      - name: proximoEvento
-        label: Próxima actividad (actualizar 1 vez a la semana)
-        type: object
-        fields:
-          - { name: titulo, label: Título, type: string }
-          - { name: fecha, label: Fecha, type: date, description: "Si se deja vacía aparece «Fecha por confirmar»." }
-          - { name: hora, label: Hora, type: string, description: "Ej. 10:00 hrs." }
-          - { name: lugar, label: Lugar, type: string }
-          - { name: descripcion, label: Descripción breve, type: text }
-          - { name: imagen, label: Imagen, type: image }
-          - { name: enlace, label: Enlace (opcional), type: string, description: "Página interna (ej. /admision/) o dirección completa (https://...)." }
       - name: instagram
-        label: Instagram (Últimas actividades)
+        label: Instagram oficial
         type: object
         fields:
-          - { name: usuario, label: Usuario, type: string }
-          - { name: descripcion, label: Descripción, type: text }
-          - { name: publicaciones, label: Publicaciones a mostrar (enlaces), type: string, list: true, description: "Copia el enlace de cada publicación de Instagram (ej. https://www.instagram.com/p/XXXX/)." }
-      - name: redes
-        label: Redes sociales (final de cada página)
-        type: object
-        list: true
-        fields:
-          - { name: nombre, label: Nombre, type: string }
-          - { name: url, label: Enlace, type: string }
-      - name: pieInformacion
-        label: "Pie de página: Información"
-        type: object
-        list: true
-        fields:
-          - { name: texto, label: Texto, type: string }
-          - { name: enlace, label: Enlace, type: string }
-      - name: pieEnlaces
-        label: "Pie de página: Enlaces de interés"
-        type: object
-        list: true
-        fields:
-          - { name: texto, label: Texto, type: string }
-          - { name: enlace, label: Enlace, type: string }
-
-  - name: menu
-    label: Menú principal
-    type: file
-    path: src/data/menu.json
-    fields:
-      - name: items
-        label: Opciones del menú
-        type: object
-        list: true
-        fields:
-          - { name: texto, label: Texto, type: string }
-          - { name: enlace, label: Enlace, type: string }
-          - name: submenu
-            label: Submenú
-            type: object
-            list: true
-            fields:
-              - { name: texto, label: Texto, type: string }
-              - { name: enlace, label: Enlace, type: string }
+          - { name: usuario, label: Usuario (sin @), type: string }

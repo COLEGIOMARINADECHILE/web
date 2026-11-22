@@ -1,4 +1,4 @@
-import { getCollection, type CollectionEntry } from 'astro:content';
+import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 
 /** Agrega el prefijo "base" del sitio a rutas internas. Las URLs externas no se tocan. */
 export function url(ruta?: string | null): string {
@@ -30,3 +30,17 @@ export async function noticiasOrdenadas(categoria?: string) {
 
 export type Noticia = CollectionEntry<'noticias'>;
 export const POR_PAGINA = 9;
+
+/** Pages CMS guarda las referencias como nombre de archivo ("pei.md") o ruta: devuelve el id ("pei"). */
+export const idDe = (ref?: string | null) => (ref ?? '').split('/').pop()!.replace(/\.md$/, '');
+
+/** Un enlace del menú o del pie puede apuntar a una página elegida de la lista o a una dirección escrita. */
+export type EnlaceCMS = { texto?: string | null; pagina?: string | null; enlace?: string | null };
+export async function resolverEnlace(i: EnlaceCMS) {
+  const id = idDe(i.pagina);
+  const pagina = id ? await getEntry('paginas', id) : undefined;
+  return {
+    texto: i.texto || pagina?.data.titulo || '',
+    enlace: pagina ? `/${pagina.id}/` : (i.enlace ?? ''),
+  };
+}

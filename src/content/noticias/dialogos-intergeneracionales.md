@@ -4,7 +4,6 @@ fecha: "2025-07-15"
 categoria: "noticias"
 imagen: "/uploads/2025/07/Plan-de-Ciudadania-y-Alfabetizacion-Digital-1.png"
 resumen: "Diálogos intergeneracionales para navegar en comunidad el mundo digital» se denominó el encuentro desarrollado esta mañana en el Colegio Marina de Chile de Concepción @colegio_mdech 🇨🇱🏫 💻Se trata de una…"
-destacada: true
 ---
 
 ![](/uploads/2025/08/image-1.png)

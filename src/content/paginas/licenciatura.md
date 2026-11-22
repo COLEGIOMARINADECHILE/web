@@ -1,8 +1,6 @@
 ---
 titulo: "Licenciatura Cuartos Medios 2026"
 imagen: "/uploads/2024/07/Frontis-colegio-mdech-e1736613516883.jpg"
-destacada: true
-orden: 4
 resumen: "Despedimos a la generación 2026 de 4° Medio. Revisa aquí la fecha, el lugar y la información para estudiantes y familias."
 ---
 

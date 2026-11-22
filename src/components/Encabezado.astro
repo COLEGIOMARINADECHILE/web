@@ -1,17 +1,18 @@
 ---
-import menu from '../data/menu.json';
 import sitio from '../data/sitio.json';
 import Icono from './Iconos.astro';
 import { url, esExterno } from '../lib/util';
+import { menuPrincipal } from '../lib/menu';
+const menu = await menuPrincipal();
 const actual = Astro.url.pathname;
 const activo = (e: string) => !esExterno(e) && actual === url(e);
-const seccionActiva = (item: (typeof menu.items)[number]) => activo(item.enlace) || item.submenu?.some((s) => activo(s.enlace));
+const seccionActiva = (item: (typeof menu)[number]) => activo(item.enlace) || item.submenu?.some((s) => activo(s.enlace));
 const ext = (e: string) => (esExterno(e) ? { target: '_blank', rel: 'noopener' } : {});
 const instagram = sitio.redes.find((r) => /instagram/i.test(r.url))?.url;
 const youtube = sitio.redes.find((r) => /youtube/i.test(r.url))?.url;
 // La última opción del menú (Admisión) se destaca como botón.
-const principales = menu.items.slice(0, -1);
-const llamado = menu.items.at(-1);
+const principales = menu.slice(0, -1);
+const llamado = menu.at(-1);
 ---
 <div class="barra-superior">
   <div class="contenedor">

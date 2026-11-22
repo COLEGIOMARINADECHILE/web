@@ -4,7 +4,8 @@
 // (noticias y publicaciones de Instagram mezcladas por fecha).
 // Demás páginas: agenda semanal, la última actividad y redes sociales.
 import sitio from '../data/sitio.json';
-import { actividades } from '../data/actividades.json';
+import datosPortada from '../data/portada.json';
+const { actividades } = datosPortada;
 import Icono from './Iconos.astro';
 import TarjetaNoticia from './TarjetaNoticia.astro';
 import { url, esExterno, fechaLarga, noticiasOrdenadas, type Noticia } from '../lib/util';
@@ -25,7 +26,7 @@ const agenda = [...actividades]
     return { ...a, dia: d.getUTCDate(), mes: meses.format(d).replace('.', ''), semana: dias.format(d) };
   });
 
-const evento = sitio.proximoEvento;
+const evento = datosPortada.proximaActividad as { titulo: string; fecha?: string; hora?: string; lugar?: string; descripcion?: string; imagen?: string; enlace?: string };
 const eventoFecha = evento.fecha ? fechaEvento.format(new Date(evento.fecha + 'T00:00:00Z')) : 'Fecha por confirmar';
 
 // La fecha de una publicación de Instagram viene dentro de su código (los primeros bits del ID son la hora).
@@ -36,7 +37,7 @@ const fechaInstagram = (codigo: string) => {
   return new Date(Number((id >> 23n) + 1314220021721n));
 };
 type Item = { tipo: 'noticia'; fecha: Date; noticia: Noticia } | { tipo: 'instagram'; fecha: Date; codigo: string };
-const publicaciones: Item[] = sitio.instagram.publicaciones
+const publicaciones: Item[] = datosPortada.instagram
   .map((p) => p.match(/instagram\.com\/(?:p|reel)\/([^/?#]+)/)?.[1])
   .filter((c): c is string => !!c)
   .map((codigo) => ({ tipo: 'instagram', fecha: fechaInstagram(codigo), codigo }));

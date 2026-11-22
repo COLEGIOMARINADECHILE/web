@@ -5,33 +5,8 @@
   "comuna": "Lorenzo Arenas",
   "ciudad": "Concepción",
   "telefono": "+56 44 304 9268",
-  "accesos": {
-    "principal": {
-      "tipo": "evento",
-      "noticia": "circular-18-2026.md"
-    },
-    "paginas": [
-      "proceso-prematricula-2027",
-      "admision",
-      "calendario-de-evaluaciones"
-    ]
-  },
-  "proximoEvento": {
-    "titulo": "Licenciatura Cuartos Medios 2026",
-    "fecha": "2026-11-23",
-    "descripcion": "Ese día todos los cursos tienen clases solo de 08:00 a 09:45 hrs y se suspenden las actividades extracurriculares.",
-    "imagen": "/uploads/images.jpeg",
-    "enlace": "/licenciatura/"
-  },
   "instagram": {
-    "usuario": "colegio_mdech",
-    "descripcion": "Instagram Oficial Colegio Marina de Chile. Av. Marina de Chile 2836, Lorenzo Arenas Concepción. 📞 44 304 9268",
-    "publicaciones": [
-      "https://www.instagram.com/reel/Df-ponBOzam/",
-      "https://www.instagram.com/p/Df2NsZJOjuG/",
-      "https://www.instagram.com/p/Df0BIEtBLSs/",
-      "https://www.instagram.com/p/DfptgGUGoPt/"
-    ]
+    "usuario": "colegio_mdech"
   },
   "redes": [
     {
@@ -70,25 +45,176 @@
   "pieInformacion": [
     {
       "texto": "Horarios de Entrevista",
-      "enlace": "/horarios-de-entrevista/"
+      "pagina": "horarios-de-entrevista.md"
     },
     {
       "texto": "Horarios Cursos",
-      "enlace": "/horarios-cursos/"
+      "pagina": "horarios-cursos.md"
     }
   ],
   "pieEnlaces": [
     {
       "texto": "Plan Lector",
-      "enlace": "/plan-lector/"
+      "pagina": "plan-lector.md"
     },
     {
       "texto": "Lista de Útiles",
-      "enlace": "/lista-de-utiles/"
+      "pagina": "lista-de-utiles.md"
     },
     {
       "texto": "Uniforme Oficial",
-      "enlace": "/uniforme-oficial/"
+      "pagina": "uniforme-oficial.md"
+    }
+  ],
+  "menu": [
+    {
+      "texto": "Nuestro colegio",
+      "pagina": "nuestro-colegio-2.md",
+      "submenu": [
+        {
+          "texto": "¿Por qué elegirnos?",
+          "pagina": "por-que-elegirnos.md"
+        },
+        {
+          "texto": "Cifras y resultados",
+          "pagina": "cifras-y-resultados.md"
+        },
+        {
+          "texto": "PEI",
+          "pagina": "pei.md"
+        },
+        {
+          "texto": "Equipo Directivo",
+          "pagina": "equipo-directivo.md"
+        },
+        {
+          "texto": "Docentes",
+          "pagina": "docentes.md"
+        },
+        {
+          "texto": "Asistentes de la Educación",
+          "pagina": "asistentes-de-la-educacion.md"
+        },
+        {
+          "texto": "Equipo PIE",
+          "pagina": "equipo-pie.md"
+        },
+        {
+          "texto": "Reglamento Interno",
+          "pagina": "reglamento-interno-2.md"
+        },
+        {
+          "texto": "Reglamento de Evaluación",
+          "pagina": "reglamento-de-evaluacion.md"
+        },
+        {
+          "texto": "Plan de Gestión de la Convivencia",
+          "pagina": "plan-de-gestion.md"
+        },
+        {
+          "texto": "Protocolos",
+          "pagina": "protocolos.md"
+        },
+        {
+          "texto": "Plan de Apoyo a la Inclusión",
+          "pagina": "plan-de-apoyo-a-la-inclusion.md"
+        },
+        {
+          "texto": "Plan de Afectividad, Sexualidad y Género",
+          "pagina": "plan-de-afectividad-sexualidad-y-genero.md"
+        },
+        {
+          "texto": "Plan de Formación Ciudadana",
+          "pagina": "plan-de-formacion-ciudadana.md"
+        },
+        {
+          "texto": "Plan Integral de Seguridad Escolar",
+          "pagina": "pise.md"
+        }
+      ]
+    },
+    {
+      "texto": "Familias",
+      "pagina": "familias.md",
+      "submenu": [
+        {
+          "texto": "Circulares",
+          "enlace": "/category/circulares/"
+        },
+        {
+          "texto": "Horarios Cursos",
+          "pagina": "horarios-cursos.md"
+        },
+        {
+          "texto": "Horarios de Entrevista",
+          "pagina": "horarios-de-entrevista.md"
+        },
+        {
+          "texto": "Lista de Útiles",
+          "pagina": "lista-de-utiles.md"
+        },
+        {
+          "texto": "Uniforme Oficial",
+          "pagina": "uniforme-oficial.md"
+        },
+        {
+          "texto": "Reglamento Interno",
+          "pagina": "reglamento-interno-2.md"
+        },
+        {
+          "texto": "Protocolos",
+          "pagina": "protocolos.md"
+        },
+        {
+          "texto": "Centro de Padres",
+          "pagina": "cegepa.md"
+        }
+      ]
+    },
+    {
+      "texto": "Talleres",
+      "pagina": "talleres-extraescolares.md",
+      "submenu": []
+    },
+    {
+      "texto": "Estudiantes",
+      "pagina": "estudiantes.md",
+      "submenu": [
+        {
+          "texto": "Aula Virtual",
+          "pagina": "aula-virtual.md"
+        },
+        {
+          "texto": "Calendario de Evaluaciones",
+          "enlace": "https://2ciclomarina.github.io/consultas/#calendario"
+        },
+        {
+          "texto": "Evaluaciones Atrasadas",
+          "enlace": "https://2ciclomarina.github.io/consultas/"
+        },
+        {
+          "texto": "Centro de Estudiantes",
+          "pagina": "cee.md"
+        },
+        {
+          "texto": "Plan Lector",
+          "pagina": "plan-lector.md"
+        },
+        {
+          "texto": "Licenciatura 2026",
+          "pagina": "licenciatura.md"
+        }
+      ]
+    },
+    {
+      "texto": "Docentes",
+      "enlace": "https://sites.google.com/andaliensur.cl/gestion/p%C3%A1gina-principal?authuser=3",
+      "submenu": []
+    },
+    {
+      "texto": "Admisión",
+      "pagina": "admision.md",
+      "submenu": []
     }
   ]
 }

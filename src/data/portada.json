@@ -1,0 +1,70 @@
+{
+  "carrusel": [
+    {
+      "tipo": "pagina",
+      "pagina": "por-que-elegirnos.md"
+    },
+    {
+      "tipo": "pagina",
+      "pagina": "cifras-y-resultados.md"
+    },
+    {
+      "tipo": "pagina",
+      "pagina": "licenciatura.md"
+    },
+    {
+      "tipo": "noticia",
+      "noticia": "matricula-2027.md"
+    },
+    {
+      "tipo": "noticia",
+      "noticia": "dialogos-intergeneracionales.md"
+    }
+  ],
+  "accesos": {
+    "principal": {
+      "tipo": "evento",
+      "noticia": "circular-18-2026.md"
+    },
+    "paginas": [
+      "proceso-prematricula-2027.md",
+      "admision.md",
+      "calendario-de-evaluaciones.md"
+    ]
+  },
+  "proximaActividad": {
+    "titulo": "Licenciatura Cuartos Medios 2026",
+    "fecha": "2026-11-23",
+    "descripcion": "Ese día todos los cursos tienen clases solo de 08:00 a 09:45 hrs y se suspenden las actividades extracurriculares.",
+    "imagen": "/uploads/images.jpeg",
+    "enlace": "/licenciatura/"
+  },
+  "actividades": [
+    {
+      "fecha": "2026-11-23",
+      "titulo": "Licenciatura Cuartos Medios. Jornada única de 08:00 a 09:45 hrs"
+    },
+    {
+      "fecha": "2026-11-24",
+      "titulo": "Simce 2° Básico"
+    },
+    {
+      "fecha": "2026-11-24",
+      "titulo": "Visita Orquesta Armada"
+    },
+    {
+      "fecha": "2026-11-27",
+      "titulo": "Ceremonia de la Lectura"
+    },
+    {
+      "fecha": "2026-11-27",
+      "titulo": "Celebración Día del Apoderado"
+    }
+  ],
+  "instagram": [
+    "https://www.instagram.com/reel/Df-ponBOzam/",
+    "https://www.instagram.com/p/Df2NsZJOjuG/",
+    "https://www.instagram.com/p/Df0BIEtBLSs/",
+    "https://www.instagram.com/p/DfptgGUGoPt/"
+  ]
+}

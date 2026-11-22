@@ -1,8 +1,6 @@
 ---
 titulo: "¿Por qué elegir el Marina de Chile?"
 imagen: "/uploads/2025/08/2-1.png"
-destacada: true
-orden: 1
 resumen: "Formación basada en valores, disciplina y autonomía, tradición y compromiso. Conoce los cuatro sellos que acompañan a nuestros estudiantes desde Transición hasta 4° Medio."
 ---
 
