@@ -46,4 +46,4 @@ Fomentamos el talento, la creatividad y la vida saludable con talleres extraesco
 
 [Proceso de Admisión 2027](/admision/)
 
-Revisa también nuestro [Proyecto Educativo Institucional](/pei/), nuestras [cifras y resultados](/cifras-y-resultados/) y lo que dice nuestra [comunidad](/voces/).
+Revisa también nuestro [Proyecto Educativo Institucional](/pei/) y nuestras [cifras y resultados](/cifras-y-resultados/).

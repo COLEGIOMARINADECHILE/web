@@ -66,7 +66,7 @@ const accesos = [primero, ...resto].filter(Boolean) as Acceso[];
     </section>
   )}
 
-  <section class="contenedor accesos" aria-label="Accesos rápidos">
+  <section class="contenedor accesos" aria-label="Accesos rápidos" style={`--accesos: ${accesos.length}`}>
     {accesos.map((a) => (
       <a class="acceso" href={url(a.enlace)}>
         {a.imagen
