@@ -47,7 +47,26 @@ const publicaciones: Item[] = datosPortada.instagram
 const recientes: Item[] = noticias
   .filter((n) => n.data.categoria !== 'circulares')
   .map((noticia) => ({ tipo: 'noticia', fecha: noticia.data.fecha, noticia }));
-const ultimas = [...publicaciones, ...recientes].sort((a, b) => b.fecha.getTime() - a.fecha.getTime()).slice(0, 3);
+const porFecha = (a: Item, b: Item) => b.fecha.getTime() - a.fecha.getTime();
+// Las 3 más recientes, pero siempre con al menos una noticia y una publicación de Instagram
+// (si existen), para que se vean los dos tipos de contenido. Si falta un tipo, su más reciente
+// reemplaza a la más antigua de las 3 que no sea del otro tipo único.
+const todas = [...publicaciones, ...recientes].sort(porFecha);
+let ultimas = todas.slice(0, 3);
+for (const tipo of ['noticia', 'instagram'] as const) {
+  if (ultimas.some((i) => i.tipo === tipo)) continue;
+  const falta = todas.find((i) => i.tipo === tipo);
+  if (!falta) continue;
+  const otroTipo = tipo === 'noticia' ? 'instagram' : 'noticia';
+  // Se reemplaza la más antigua, cuidando no quitar la única del otro tipo.
+  for (let k = ultimas.length - 1; k >= 0; k--) {
+    const quedanDelOtro = ultimas.filter((i, j) => j !== k && i.tipo === otroTipo).length;
+    if (ultimas[k].tipo === otroTipo && quedanDelOtro === 0 && ultimas.length > 1) continue;
+    ultimas[k] = falta;
+    break;
+  }
+}
+ultimas = ultimas.sort(porFecha);
 const ext = (e: string) => (esExterno(e) ? { target: '_blank', rel: 'noopener' } : {});
 ---
 <section class="seccion seccion-suave actualidad">
