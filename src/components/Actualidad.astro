@@ -8,18 +8,16 @@ import datosPortada from '../data/portada.json';
 const { actividades } = datosPortada;
 import Icono from './Iconos.astro';
 import TarjetaNoticia from './TarjetaNoticia.astro';
-import { url, esExterno, fechaLarga, noticiasOrdenadas, type Noticia } from '../lib/util';
+import { url, esExterno, fechaLarga, noticiasOrdenadas, numeroCircular, temaCircular, type Noticia } from '../lib/util';
 
 interface Props { portada?: boolean }
 const { portada = false } = Astro.props;
 
 const noticias = await noticiasOrdenadas();
 // Circulares: número (de «Circular N°18/2026: …») y tema sin el prefijo, para mostrarlas como la agenda.
-const circulares = noticias.filter((n) => n.data.categoria === 'circulares').slice(0, 4).map((c) => {
-  const numero = c.data.titulo.match(/n\s*[°º.]?\s*(\d+)/i)?.[1];
-  const tema = c.data.titulo.replace(/^circular\s*n\s*[°º.]?\s*\d+(\s*\/\s*\d{4})?\s*[:\-–]?\s*/i, '').trim();
-  return { id: c.id, fecha: c.data.fecha, numero, tema: tema || c.data.titulo };
-});
+const circulares = noticias.filter((n) => n.data.categoria === 'circulares').slice(0, 4).map((c) => ({
+  id: c.id, fecha: c.data.fecha, numero: numeroCircular(c.data.titulo), tema: temaCircular(c.data.titulo),
+}));
 
 const dias = new Intl.DateTimeFormat('es-CL', { weekday: 'long', timeZone: 'UTC' });
 const meses = new Intl.DateTimeFormat('es-CL', { month: 'short', timeZone: 'UTC' });

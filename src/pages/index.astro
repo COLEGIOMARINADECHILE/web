@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import Icono from '../components/Iconos.astro';
 import portada from '../data/portada.json';
 import { getEntry } from 'astro:content';
-import { url, idDe } from '../lib/util';
+import { url, idDe, esExterno, numeroCircular, temaCircular } from '../lib/util';
 
 // Todo lo de la portada se elige en Pages CMS, en «Portada» (src/data/portada.json).
 type Ref = { tipo?: string; pagina?: string | null; noticia?: string | null };
@@ -16,22 +16,37 @@ const destacadas = (await Promise.all((portada.carrusel as Ref[]).map(async (r) 
   return e ? { id: e.id, data: e.data, sobretitulo: e.collection === 'paginas' ? 'Nuestro colegio' : 'Destacado' } : null;
 }))).filter((d): d is NonNullable<typeof d> => d !== null);
 
-// Tarjetas bajo el carrusel: la primera puede ser la próxima actividad, una noticia o una página;
-// las demás son páginas.
-type Acceso = { titulo: string; imagen?: string | null; enlace: string; etiqueta: string };
-const desdeEntrada = async (coleccion: 'paginas' | 'noticias', ref?: string | null, etiqueta = 'Nuestro colegio'): Promise<Acceso | null> => {
-  const id = idDe(ref);
-  const e = id ? await getEntry(coleccion, id) : undefined;
-  return e ? { titulo: e.data.titulo, imagen: e.data.imagen, enlace: `/${e.id}/`, etiqueta } : null;
-};
-const principal = portada.accesos.principal as Ref;
+// Tarjetas bajo el carrusel (hasta 5): cada una puede ser la próxima actividad, una noticia o
+// circular, una página o un enlace (a otra página del sitio o a otro sitio web).
+// El título y la imagen se pueden cambiar en cada tarjeta.
+type TarjetaCMS = Ref & { titulo?: string | null; enlace?: string | null; imagen?: string | null };
+type Acceso = { titulo: string; imagen?: string | null; enlace: string; etiqueta: string; circular?: string; externo?: boolean };
 const evento = portada.proximaActividad;
-const primero: Acceso | null =
-  principal.tipo === 'noticia' ? await desdeEntrada('noticias', principal.noticia, 'Noticia')
-  : principal.tipo === 'pagina' ? await desdeEntrada('paginas', principal.pagina, 'Destacado')
-  : { titulo: evento.titulo, imagen: evento.imagen, enlace: evento.enlace || '/', etiqueta: 'Próxima actividad' };
-const resto = (await Promise.all(portada.accesos.paginas.slice(0, 4).map((p) => desdeEntrada('paginas', p)))).filter(Boolean) as Acceso[];
-const accesos = [primero, ...resto].filter(Boolean) as Acceso[];
+const resolver = async (t: TarjetaCMS): Promise<Acceso | null> => {
+  let base: Acceso | null = null;
+  if (t.tipo === 'evento') {
+    base = { titulo: evento.titulo, imagen: evento.imagen, enlace: evento.enlace || '/', etiqueta: 'Próxima actividad' };
+  } else if (t.tipo === 'noticia') {
+    const e = idDe(t.noticia) ? await getEntry('noticias', idDe(t.noticia)) : undefined;
+    if (e) {
+      const esCircular = e.data.categoria === 'circulares';
+      const numero = esCircular ? numeroCircular(e.data.titulo) : undefined;
+      base = {
+        titulo: esCircular ? temaCircular(e.data.titulo) : e.data.titulo, imagen: e.data.imagen, enlace: `/${e.id}/`,
+        etiqueta: esCircular ? (numero ? `Circular N°${numero}` : 'Circular') : 'Noticia', circular: esCircular ? (numero ?? '') : undefined,
+      };
+    }
+  } else if (t.tipo === 'pagina') {
+    const e = idDe(t.pagina) ? await getEntry('paginas', idDe(t.pagina)) : undefined;
+    if (e) base = { titulo: e.data.titulo, imagen: e.data.imagen, enlace: `/${e.id}/`, etiqueta: 'Nuestro colegio' };
+  } else if (t.tipo === 'enlace' && t.enlace) {
+    base = { titulo: t.titulo || t.enlace, enlace: t.enlace, etiqueta: esExterno(t.enlace) ? 'Enlace externo' : 'Destacado', externo: esExterno(t.enlace) };
+  }
+  if (!base) return null;
+  return { ...base, titulo: t.titulo || base.titulo, imagen: t.imagen || base.imagen };
+};
+const accesos = (await Promise.all(((portada as { tarjetas: TarjetaCMS[] }).tarjetas ?? []).slice(0, 5).map(resolver)))
+  .filter((a): a is Acceso => a !== null);
 ---
 <Base portada>
   {destacadas.length > 0 && (
@@ -69,11 +84,13 @@ const accesos = [primero, ...resto].filter(Boolean) as Acceso[];
 
   <section class="contenedor accesos" aria-label="Accesos rápidos" style={`--accesos: ${accesos.length}`}>
     {accesos.map((a) => (
-      <a class="acceso" href={url(a.enlace)}>
+      <a class="acceso" href={url(a.enlace)} {...(a.externo ? { target: '_blank', rel: 'noopener' } : {})}>
         {a.imagen
           ? <img src={url(a.imagen)} alt="" loading="lazy" decoding="async" width="400" height="225" />
-          : <span class="acceso-sin-imagen"><Icono nombre="noticia" tamano={36} /></span>}
-        <span class="acceso-texto"><small>{a.etiqueta}</small>{a.titulo} <Icono nombre="flecha" tamano={18} /></span>
+          : a.circular !== undefined
+            ? <span class="acceso-circular" aria-hidden="true"><small>Circular</small>{a.circular && <b><small>N°</small>{a.circular}</b>}</span>
+            : <span class="acceso-sin-imagen"><Icono nombre={a.externo ? 'enlace' : 'noticia'} tamano={36} /></span>}
+        <span class="acceso-texto"><small>{a.etiqueta}</small>{a.titulo} <Icono nombre={a.externo ? 'enlace' : 'flecha'} tamano={18} /></span>
       </a>
     ))}
   </section>

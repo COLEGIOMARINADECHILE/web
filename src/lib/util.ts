@@ -44,3 +44,9 @@ export async function resolverEnlace(i: EnlaceCMS) {
     enlace: pagina ? `/${pagina.id}/` : (i.enlace ?? ''),
   };
 }
+
+/** Número de una circular a partir de su título («Circular N°18/2026: …» → "18"). */
+export const numeroCircular = (titulo: string) => titulo.match(/n\s*[°º.]?\s*(\d+)/i)?.[1];
+/** Tema de una circular sin el prefijo «Circular N°18/2026:». Si no queda nada, el título completo. */
+export const temaCircular = (titulo: string) =>
+  titulo.replace(/^circular\s*n\s*[°º.]?\s*\d+(\s*\/\s*\d{4})?\s*[:\-–]?\s*/i, '').trim() || titulo;

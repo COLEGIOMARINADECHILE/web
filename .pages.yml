@@ -42,28 +42,25 @@ content:
                 - { value: noticia, label: Una noticia o circular }
           - { name: pagina, label: "Página (si elegiste «Una página»)", type: reference, options: { collection: paginas, search: titulo, value: "{name}", label: "{titulo}" } }
           - { name: noticia, label: "Noticia (si elegiste «Una noticia»)", type: reference, options: { collection: noticias, search: titulo, value: "{name}", label: "{titulo}" } }
-      - name: accesos
-        label: Tarjetas bajo el carrusel (hasta 5)
+      - name: tarjetas
+        label: Tarjetas bajo el carrusel (hasta 5, en este orden)
         type: object
+        list: true
         fields:
-          - name: principal
-            label: Primera tarjeta
-            type: object
-            fields:
-              - name: tipo
-                label: Qué mostrar
-                type: select
-                options:
-                  values:
-                    - { value: evento, label: La próxima actividad }
-                    - { value: noticia, label: Una noticia o circular }
-                    - { value: pagina, label: Una página }
-              - { name: noticia, label: "Noticia (si elegiste «Una noticia»)", type: reference, options: { collection: noticias, search: titulo, value: "{name}", label: "{titulo}" } }
-              - { name: pagina, label: "Página (si elegiste «Una página»)", type: reference, options: { collection: paginas, search: titulo, value: "{name}", label: "{titulo}" } }
-          - name: paginas
-            label: Las otras tarjetas (hasta 4 páginas)
-            type: reference
-            options: { collection: paginas, search: titulo, value: "{name}", label: "{titulo}", multiple: true, max: 4 }
+          - name: tipo
+            label: Qué mostrar
+            type: select
+            options:
+              values:
+                - { value: evento, label: La próxima actividad }
+                - { value: noticia, label: Una noticia o circular }
+                - { value: pagina, label: Una página }
+                - { value: enlace, label: Un enlace (otra página u otro sitio web) }
+          - { name: noticia, label: "Noticia (si elegiste «Una noticia»)", type: reference, options: { collection: noticias, search: titulo, value: "{name}", label: "{titulo}" } }
+          - { name: pagina, label: "Página (si elegiste «Una página»)", type: reference, options: { collection: paginas, search: titulo, value: "{name}", label: "{titulo}" } }
+          - { name: enlace, label: "Dirección (si elegiste «Un enlace»)", type: string, description: "Ej. /noticias/ o https://www.sistemadeadmisionescolar.cl" }
+          - { name: titulo, label: Título (opcional), type: string, description: "Para cambiar el texto de la tarjeta. Obligatorio si es un enlace." }
+          - { name: imagen, label: Imagen (opcional), type: image, description: "Para cambiar la imagen. Las circulares sin imagen muestran una hoja amarilla con su número." }
       - name: proximaActividad
         label: Próxima actividad (actualizar 1 vez a la semana)
         type: object

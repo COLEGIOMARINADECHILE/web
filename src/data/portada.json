@@ -17,17 +17,24 @@
       "noticia": "matricula-2027.md"
     }
   ],
-  "accesos": {
-    "principal": {
+  "tarjetas": [
+    {
       "tipo": "noticia",
       "noticia": "circular-18-2026.md"
     },
-    "paginas": [
-      "proceso-prematricula-2027.md",
-      "admision.md",
-      "calendario-de-evaluaciones.md"
-    ]
-  },
+    {
+      "tipo": "pagina",
+      "pagina": "proceso-prematricula-2027.md"
+    },
+    {
+      "tipo": "pagina",
+      "pagina": "admision.md"
+    },
+    {
+      "tipo": "pagina",
+      "pagina": "calendario-de-evaluaciones.md"
+    }
+  ],
   "proximaActividad": {
     "titulo": "Licenciatura Cuartos Medios 2026",
     "fecha": "2026-11-23",
