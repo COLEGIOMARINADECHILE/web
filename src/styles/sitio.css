@@ -254,6 +254,13 @@ h1, h2, h3 { font-family: var(--titulos); line-height: 1.2; color: var(--azul); 
   color: var(--azul); text-decoration: none; font: 600 16px var(--titulos); transition: transform .2s, box-shadow .2s;
 }
 .subpaginas a:hover { transform: translateY(-3px); box-shadow: var(--sombra-alta); }
+.contenido blockquote { margin: 24px 0; padding: 24px 28px; background: var(--azul-claro); border-left: 4px solid var(--amarillo); border-radius: 0 var(--radio) var(--radio) 0; font-size: 18px; color: var(--azul); }
+.contenido blockquote p:last-child { margin-bottom: 0; font-size: 15px; }
+/* Cifras: la primera lista de la página se muestra como mosaico de números */
+.pagina-cifras-y-resultados .contenido > ul:first-of-type { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 24px 0 8px; }
+.pagina-cifras-y-resultados .contenido > ul:first-of-type li { margin: 0; padding: 22px 20px; background: var(--azul); color: #dfe7f5; border-radius: var(--radio); font-size: 15px; line-height: 1.4; }
+.pagina-cifras-y-resultados .contenido > ul:first-of-type strong { display: block; font: 800 40px/1.1 var(--titulos); color: var(--amarillo); margin-bottom: 6px; }
+@media (max-width: 600px) { .pagina-cifras-y-resultados .contenido > ul:first-of-type { grid-template-columns: 1fr 1fr; } }
 .aviso { background: var(--fondo-suave); border-left: 4px solid var(--amarillo); border-radius: 0 var(--radio-chico) var(--radio-chico) 0; padding: 16px 20px; }
 
 .lateral { display: flex; flex-direction: column; gap: 24px; }

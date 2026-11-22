@@ -3,9 +3,16 @@ import Base from '../layouts/Base.astro';
 import CabeceraPagina from '../components/CabeceraPagina.astro';
 import Icono from '../components/Iconos.astro';
 import sitio from '../data/sitio.json';
+import { getCollection } from 'astro:content';
 import { url, esExterno, noticiasOrdenadas } from '../lib/util';
 
-const destacadas = (await noticiasOrdenadas()).filter((n) => n.data.destacada);
+// Carrusel: primero las páginas destacadas (por orden) y luego las noticias destacadas.
+const paginas = (await getCollection('paginas', (p) => p.data.destacada))
+  .sort((a, b) => (a.data.orden ?? 99) - (b.data.orden ?? 99));
+const noticias = (await noticiasOrdenadas()).filter((n) => n.data.destacada);
+const destacadas = [...paginas, ...noticias].map((e) => ({
+  id: e.id, data: e.data, sobretitulo: e.collection === 'paginas' ? 'Nuestro colegio' : 'Destacado',
+}));
 const ext = (e: string) => (esExterno(e) ? { target: '_blank', rel: 'noopener' } : {});
 ---
 <Base>
@@ -20,7 +27,7 @@ const ext = (e: string) => (esExterno(e) ? { target: '_blank', rel: 'noopener' }
           {destacadas.map((n, i) => (
             <article class="diapositiva" aria-label={`${i + 1} de ${destacadas.length}`}>
               <div class="diapositiva-texto">
-                <span class="sobretitulo">Destacado</span>
+                <span class="sobretitulo">{n.sobretitulo}</span>
                 <h2><a href={url(`/${n.id}/`)}>{n.data.titulo}</a></h2>
                 {n.data.resumen && <p>{n.data.resumen}</p>}
                 <a class="boton boton-amarillo" href={url(`/${n.id}/`)}>Seguir leyendo <Icono nombre="flecha" tamano={18} /></a>

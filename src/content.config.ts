@@ -20,6 +20,9 @@ const paginas = defineCollection({
   schema: z.object({
     titulo: z.string(),
     imagen: z.string().optional().nullable(),
+    resumen: z.string().optional().nullable(),
+    destacada: z.boolean().optional().default(false),
+    orden: z.number().optional().nullable(),
   }),
 });
 

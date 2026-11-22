@@ -46,7 +46,10 @@ content:
       fields: [titulo]
     fields:
       - { name: titulo, label: Título, type: string, required: true }
-      - { name: imagen, label: Imagen para redes sociales, type: image }
+      - { name: imagen, label: Imagen (redes sociales y carrusel), type: image }
+      - { name: destacada, label: Destacar en el carrusel, type: boolean }
+      - { name: orden, label: Orden en el carrusel, type: number, description: "1 aparece primero. Las páginas destacadas van antes que las noticias destacadas." }
+      - { name: resumen, label: Resumen para el carrusel, type: text }
       - { name: body, label: Contenido, type: rich-text }
 
   - name: actividades

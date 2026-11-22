@@ -39,7 +39,7 @@ const resumen = data.resumen || `${data.titulo} – Colegio Marina de Chile`;
     )}
   </CabeceraPagina>
   <div class="contenedor contenido-centrado">
-    <article class="entrada">
+    <article class={`entrada pagina-${entrada.id}`}>
       {tipo === 'noticia' && data.imagen && !entrada.body?.includes(data.imagen) && (
         <img class="entrada-imagen" src={url(data.imagen)} alt="" />
       )}
