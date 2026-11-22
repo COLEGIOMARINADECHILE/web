@@ -24,7 +24,8 @@ export const fechaLarga = (d: Date) => {
 
 export async function noticiasOrdenadas(categoria?: string) {
   const todas = await getCollection('noticias', (n) => !n.data.borrador && (!categoria || n.data.categoria === categoria));
-  return todas.sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime());
+  // Más recientes primero; si comparten fecha, la de número mayor (ej. circular-16 antes que circular-15).
+  return todas.sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime() || b.id.localeCompare(a.id, 'es', { numeric: true }));
 }
 
 export type Noticia = CollectionEntry<'noticias'>;

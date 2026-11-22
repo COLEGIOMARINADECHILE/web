@@ -8,15 +8,17 @@ resumen: "Despedimos a la generación 2026 de 4° Medio. Revisa aquí la fecha, 
 
 La Licenciatura es la ceremonia con que el Colegio Marina de Chile despide a sus estudiantes de 4° Medio y celebra, junto a sus familias, el cierre de su etapa escolar.
 
-## Fecha y lugar
+## Fecha
 
-La fecha, la hora y el lugar se informarán en la portada del sitio, en el bloque **Próximo gran evento**, y por circular a las familias.
+**Lunes 23 de noviembre de 2026.**
 
-[Ver circulares](/category/circulares/)
+Ese día todos los niveles tienen un horario único de clases, de **08:00 a 09:45 hrs**, para que todo el personal del colegio pueda participar en la ceremonia. Las actividades extracurriculares de la jornada quedan suspendidas.
+
+[Ver Circular N°18/2026](/circular-18-2026/)
 
 ## Para estudiantes y familias
 
-Las indicaciones sobre uniforme, horario de llegada e invitados se entregarán por circular y a través de los profesores jefes de 4° Medio.
+Las indicaciones sobre uniforme, horario de llegada e invitados se entregan a través de los profesores jefes de 4° Medio.
 
 ## Después de 4° Medio
 

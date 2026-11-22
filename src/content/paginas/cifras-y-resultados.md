@@ -3,12 +3,12 @@ titulo: "Cifras y resultados"
 imagen: "/uploads/2025/08/IMG_5814-Large.jpeg"
 destacada: true
 orden: 2
-resumen: "Más de 69 años formando estudiantes en Concepción, de Transición Menor a 4° Medio, con 23 electivos y más de 10 talleres extraescolares."
+resumen: "70 años formando estudiantes en Concepción, de Transición Menor a 4° Medio, con 23 electivos y más de 10 talleres extraescolares."
 ---
 
 El Marina de Chile en números:
 
-- **69+** años de historia en Lorenzo Arenas
+- **70** años de historia en Lorenzo Arenas, desde 1956
 - **2** sedes: Ciclo Menor y Sede Matriz
 - **14** niveles, de Transición Menor a 4° Medio
 - **23** electivos en 3° y 4° Medio, en 5 áreas
