@@ -7,7 +7,7 @@ mismo diseño y mismas direcciones (por ejemplo `/admision/`, `/pise/`, `/catego
 ## Editar el contenido (sin programar)
 
 1. Entra a **https://app.pagescms.org** y presiona *Sign in with GitHub*.
-2. Elige el repositorio **for-mi-da-ble/mch-web**.
+2. Elige el repositorio **colegiomarinadechile/web**.
 3. En el menú de la izquierda verás:
    - **Noticias y circulares**: crear una noticia, una circular (con su PDF) o un aviso.
      Marca *Destacar en el carrusel* para que aparezca arriba en la portada.
@@ -27,13 +27,13 @@ Cada cambio en la rama `main` se publica automáticamente en GitHub Pages
 (`.github/workflows/deploy.yml`).
 
 **Activar la primera vez:** en GitHub, *Settings → Pages → Build and deployment → Source: GitHub Actions*.
-El sitio queda en `https://for-mi-da-ble.github.io/mch-web/`.
+El sitio queda en `https://colegiomarinadechile.github.io/web/`.
 
 **Usar el dominio del colegio:** en *Settings → Pages → Custom domain* escribe `colegiomarinadechile.cl`
 y en el proveedor del dominio apunta el DNS a GitHub Pages
 ([instrucciones](https://docs.github.com/es/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site)):
 registros `A` a 185.199.108.153, 185.199.109.153, 185.199.110.153 y 185.199.111.153, y `CNAME` de `www` a
-`for-mi-da-ble.github.io`. Luego activa *Enforce HTTPS*.
+`colegiomarinadechile.github.io`. Luego activa *Enforce HTTPS*.
 
 ## Desarrollo
 
