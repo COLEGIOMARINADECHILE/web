@@ -62,7 +62,7 @@ const ext = (e: string) => (esExterno(e) ? { target: '_blank', rel: 'noopener' }
     </section>}
 
     <section class="bloque">
-      <h2 class="bloque-titulo">Próximas actividades</h2>
+      <h2 class="bloque-titulo">Esta semana</h2>
       <ol class="agenda">
         {agenda.map((a) => (
           <li data-fecha={a.fecha}>
@@ -128,4 +128,14 @@ const ext = (e: string) => (esExterno(e) ? { target: '_blank', rel: 'noopener' }
     if (mostrar) visibles++;
   });
   if (!visibles) document.querySelector<HTMLElement>('.agenda-vacia')?.removeAttribute('hidden');
+
+  // Portada: las publicaciones de «Últimas actividades» toman el mismo alto que la fila de arriba.
+  // Se mide el último bloque (Circulares), que siempre ocupa una sola fila.
+  const bloqueArriba = document.querySelector<HTMLElement>('.actualidad .tres-bloques:not(.grilla-ultimas) > .bloque:last-child');
+  const filaUltimas = document.querySelector<HTMLElement>('.grilla-ultimas');
+  if (bloqueArriba && filaUltimas) {
+    const igualar = () => filaUltimas.style.setProperty('--alto-fila', `${bloqueArriba.getBoundingClientRect().height}px`);
+    igualar();
+    new ResizeObserver(igualar).observe(bloqueArriba);
+  }
 </script>

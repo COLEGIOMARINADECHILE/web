@@ -224,6 +224,12 @@ h1, h2, h3 { font-family: var(--titulos); line-height: 1.2; color: var(--azul); 
 .bloque-ultima .tarjeta-instagram { height: 520px; }
 .bloque .chips a { padding: 8px 14px; }
 .bloque-post { padding: 16px; }
+/* En computador cada publicación mide lo mismo que la fila de arriba (el alto lo fija un script) */
+@media (min-width: 901px) {
+  .bloque-post { height: var(--alto-fila, 520px); overflow: hidden; }
+  .bloque-post .tarjeta-instagram { height: auto; flex: 1; }
+  .bloque-post .tarjeta-resumen { -webkit-line-clamp: 2; }
+}
 .bloque-post .tarjeta { flex: 1; border: 0; box-shadow: none; }
 .bloque-post .tarjeta:hover { transform: none; box-shadow: none; }
 .bloque-post .tarjeta-cuerpo { padding: 16px 4px 4px; }

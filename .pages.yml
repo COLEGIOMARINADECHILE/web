@@ -76,7 +76,7 @@ content:
           - { name: imagen, label: Imagen, type: image }
           - { name: enlace, label: Enlace (opcional), type: string, description: "Página interna (ej. /licenciatura/) o dirección completa (https://...)." }
       - name: actividades
-        label: Próximas actividades (agenda semanal)
+        label: Esta semana (agenda de actividades)
         type: object
         list: true
         description: "Las actividades con fecha pasada se ocultan solas. Se muestran las 4 siguientes."
