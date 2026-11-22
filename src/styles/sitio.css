@@ -218,6 +218,11 @@ h1, h2, h3 { font-family: var(--titulos); line-height: 1.2; color: var(--azul); 
 .ultimas-acciones { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 /* Cada publicación va enmarcada como los bloques de arriba (mismo ancho, borde y relleno) */
 .grilla-ultimas { align-items: stretch; }
+.bloque-ultima .tarjeta { border: 0; box-shadow: none; }
+.bloque-ultima .tarjeta:hover { transform: none; box-shadow: none; }
+.bloque-ultima .tarjeta-cuerpo { padding: 16px 0 4px; }
+.bloque-ultima .tarjeta-instagram { height: 520px; }
+.bloque .chips a { padding: 8px 14px; }
 .bloque-post { padding: 16px; }
 .bloque-post .tarjeta { flex: 1; border: 0; box-shadow: none; }
 .bloque-post .tarjeta:hover { transform: none; box-shadow: none; }

@@ -32,7 +32,7 @@ const primero: Acceso | null =
 const resto = (await Promise.all(sitio.accesos.paginas.slice(0, 4).map((p) => desdeEntrada('paginas', p)))).filter(Boolean) as Acceso[];
 const accesos = [primero, ...resto].filter(Boolean) as Acceso[];
 ---
-<Base>
+<Base portada>
   {destacadas.length > 0 && (
     <section class="portada" aria-label="Destacados" aria-roledescription="carrusel">
       <div class="contenedor">

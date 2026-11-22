@@ -1,12 +1,16 @@
 ---
-// Bloque de actualidad que va al final de todas las páginas:
-// arriba la próxima actividad destacada, la agenda semanal y las circulares;
-// abajo las 3 últimas actividades (noticias y publicaciones de Instagram mezcladas por fecha).
+// Bloque de actualidad al final de las páginas.
+// Portada: próxima actividad, agenda semanal y circulares; abajo las 3 últimas actividades
+// (noticias y publicaciones de Instagram mezcladas por fecha).
+// Demás páginas: agenda semanal, la última actividad y redes sociales.
 import sitio from '../data/sitio.json';
 import { actividades } from '../data/actividades.json';
 import Icono from './Iconos.astro';
 import TarjetaNoticia from './TarjetaNoticia.astro';
 import { url, esExterno, fechaLarga, noticiasOrdenadas, type Noticia } from '../lib/util';
+
+interface Props { portada?: boolean }
+const { portada = false } = Astro.props;
 
 const noticias = await noticiasOrdenadas();
 const circulares = noticias.filter((n) => n.data.categoria === 'circulares').slice(0, 4);
@@ -44,7 +48,7 @@ const ext = (e: string) => (esExterno(e) ? { target: '_blank', rel: 'noopener' }
 ---
 <section class="seccion seccion-suave actualidad">
   <div class="contenedor tres-bloques">
-    <section class="bloque">
+    {portada && <section class="bloque">
       <h2 class="bloque-titulo">Próxima actividad</h2>
       <div class="evento-marco">
         {evento.imagen && <img class="evento-imagen" src={url(evento.imagen)} alt="" loading="lazy" decoding="async" width="600" height="338" />}
@@ -54,7 +58,7 @@ const ext = (e: string) => (esExterno(e) ? { target: '_blank', rel: 'noopener' }
         {evento.descripcion && <p class="evento-texto">{evento.descripcion}</p>}
       </div>
       {evento.enlace && <a class="enlace-flecha bloque-pie" href={url(evento.enlace)} {...ext(evento.enlace)}>Más información <Icono nombre="flecha" tamano={16} /></a>}
-    </section>
+    </section>}
 
     <section class="bloque">
       <h2 class="bloque-titulo">Próximas actividades</h2>
@@ -69,7 +73,7 @@ const ext = (e: string) => (esExterno(e) ? { target: '_blank', rel: 'noopener' }
       <p class="agenda-vacia" hidden><Icono nombre="calendario" tamano={28} /> No hay actividades programadas esta semana. Revisa nuestras redes sociales para estar al día.</p>
     </section>
 
-    <section class="bloque">
+    {portada ? <section class="bloque">
       <h2 class="bloque-titulo">Circulares</h2>
       <ul class="lista-circulares">
         {circulares.map((c) => (
@@ -77,10 +81,24 @@ const ext = (e: string) => (esExterno(e) ? { target: '_blank', rel: 'noopener' }
         ))}
       </ul>
       <a class="enlace-flecha bloque-pie" href={url('/category/circulares/')}>Ver todas <Icono nombre="flecha" tamano={16} /></a>
-    </section>
+    </section> : <>
+      <section class="bloque bloque-ultima">
+        <h2 class="bloque-titulo">Última actividad</h2>
+        {ultimas[0] && (ultimas[0].tipo === 'noticia'
+          ? <TarjetaNoticia noticia={ultimas[0].noticia} />
+          : <div class="tarjeta-instagram"><iframe src={`https://www.instagram.com/p/${ultimas[0].codigo}/embed`} title="Publicación de Instagram" loading="lazy" scrolling="no"></iframe></div>)}
+        <a class="enlace-flecha bloque-pie" href={url('/noticias/')}>Todas las noticias <Icono nombre="flecha" tamano={16} /></a>
+      </section>
+      <section class="bloque">
+        <h2 class="bloque-titulo">Redes sociales</h2>
+        <ul class="chips">
+          {sitio.redes.map((r) => <li><a href={r.url} target="_blank" rel="noopener">{r.nombre}</a></li>)}
+        </ul>
+      </section>
+    </>}
   </div>
 
-  <div class="contenedor ultimas">
+  {portada && <div class="contenedor ultimas">
     <header class="seccion-cabecera ultimas-cabecera">
       <div class="ultimas-titulo">
         <h2 class="titulo-seccion">Últimas actividades</h2>
@@ -96,7 +114,7 @@ const ext = (e: string) => (esExterno(e) ? { target: '_blank', rel: 'noopener' }
         ? <TarjetaNoticia noticia={i.noticia} />
         : <div class="tarjeta-instagram"><iframe src={`https://www.instagram.com/p/${i.codigo}/embed`} title="Publicación de Instagram" loading="lazy" scrolling="no"></iframe></div>}</div>)}
     </div>
-  </div>
+  </div>}
 </section>
 
 <script>
