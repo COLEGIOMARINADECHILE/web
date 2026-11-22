@@ -7,24 +7,19 @@
   "telefono": "+56 44 304 9268",
   "accesos": {
     "principal": {
-      "tipo": "evento",
-      "noticia": "",
-      "pagina": ""
+      "tipo": "evento"
     },
     "paginas": [
       "proceso-prematricula-2027",
       "admision",
-      "calendario-de-evaluaciones",
-      "talleres-extraescolares"
+      "calendario-de-evaluaciones"
     ]
   },
   "proximoEvento": {
     "titulo": "Licenciatura Cuartos Medios 2026",
     "fecha": "2026-11-23",
-    "hora": "",
-    "lugar": "",
     "descripcion": "Ese día todos los cursos tienen clases solo de 08:00 a 09:45 hrs y se suspenden las actividades extracurriculares.",
-    "imagen": "/uploads/2024/07/Frontis-colegio-mdech-e1736613516883.jpg",
+    "imagen": "/uploads/images.jpeg",
     "enlace": "/licenciatura/"
   },
   "instagram": {
