@@ -15,20 +15,17 @@
     {
       "tipo": "noticia",
       "noticia": "matricula-2027.md"
-    },
-    {
-      "tipo": "noticia",
-      "noticia": "dialogos-intergeneracionales.md"
     }
   ],
   "accesos": {
     "principal": {
-      "tipo": "evento",
+      "tipo": "noticia",
       "noticia": "circular-18-2026.md"
     },
     "paginas": [
       "proceso-prematricula-2027.md",
       "admision.md",
+      "18-2025.md",
       "calendario-de-evaluaciones.md"
     ]
   },
