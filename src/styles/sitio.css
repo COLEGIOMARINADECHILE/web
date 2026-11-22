@@ -216,9 +216,14 @@ h1, h2, h3 { font-family: var(--titulos); line-height: 1.2; color: var(--azul); 
 .ultimas-titulo { display: flex; align-items: baseline; flex-wrap: wrap; column-gap: 16px; }
 .ultimas-titulo .seccion-bajada { margin: 0; font-size: 16px; }
 .ultimas-acciones { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-.grilla-ultimas { align-items: start; }
+/* Cada publicación va enmarcada como los bloques de arriba (mismo ancho, borde y relleno) */
+.grilla-ultimas { align-items: stretch; }
+.bloque-post { padding: 16px; }
+.bloque-post .tarjeta { flex: 1; border: 0; box-shadow: none; }
+.bloque-post .tarjeta:hover { transform: none; box-shadow: none; }
+.bloque-post .tarjeta-cuerpo { padding: 16px 4px 4px; }
 /* Instagram: se recorta el encabezado del embed (usuario y botón) y queda la imagen con los "me gusta" */
-.tarjeta-instagram { --ig-cabecera: 54px; position: relative; height: 600px; overflow: hidden; border: 1px solid var(--borde); border-radius: var(--radio); background: #fff; box-shadow: var(--sombra); }
+.tarjeta-instagram { --ig-cabecera: 54px; position: relative; height: 600px; overflow: hidden; border-radius: var(--radio-chico); background: #fff; }
 .tarjeta-instagram iframe { position: absolute; left: 0; top: calc(-1 * var(--ig-cabecera)); width: 100%; height: calc(100% + var(--ig-cabecera)); border: 0; }
 
 /* ---------- Redes ---------- */
@@ -305,7 +310,7 @@ h1, h2, h3 { font-family: var(--titulos); line-height: 1.2; color: var(--azul); 
   .logo img { width: 140px; }
   .grilla-noticias { grid-template-columns: repeat(2, 1fr); }
   .tres-bloques { grid-template-columns: 1fr 1fr; }
-  .tres-bloques > :first-child { grid-column: 1 / -1; }
+  .tres-bloques:not(.grilla-ultimas) > :first-child { grid-column: 1 / -1; }
   .diapositiva-texto { width: 60%; }
   .accesos { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .pie-columnas { grid-template-columns: 1fr 1fr; }

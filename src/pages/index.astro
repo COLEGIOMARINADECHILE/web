@@ -28,7 +28,7 @@ const evento = sitio.proximoEvento;
 const primero: Acceso | null =
   principal.tipo === 'noticia' ? await desdeEntrada('noticias', principal.noticia, 'Noticia')
   : principal.tipo === 'pagina' ? await desdeEntrada('paginas', principal.pagina, 'Destacado')
-  : { titulo: evento.titulo, imagen: evento.imagen, enlace: evento.enlace || '/', etiqueta: 'Próximo gran evento' };
+  : { titulo: evento.titulo, imagen: evento.imagen, enlace: evento.enlace || '/', etiqueta: 'Próxima actividad' };
 const resto = (await Promise.all(sitio.accesos.paginas.slice(0, 4).map((p) => desdeEntrada('paginas', p)))).filter(Boolean) as Acceso[];
 const accesos = [primero, ...resto].filter(Boolean) as Acceso[];
 ---

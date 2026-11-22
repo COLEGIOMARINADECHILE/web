@@ -1,6 +1,6 @@
 ---
 // Bloque de actualidad que va al final de todas las páginas:
-// arriba el próximo gran evento, la agenda semanal y las circulares;
+// arriba la próxima actividad destacada, la agenda semanal y las circulares;
 // abajo las 3 últimas actividades (noticias y publicaciones de Instagram mezcladas por fecha).
 import sitio from '../data/sitio.json';
 import { actividades } from '../data/actividades.json';
@@ -45,7 +45,7 @@ const ext = (e: string) => (esExterno(e) ? { target: '_blank', rel: 'noopener' }
 <section class="seccion seccion-suave actualidad">
   <div class="contenedor tres-bloques">
     <section class="bloque">
-      <h2 class="bloque-titulo">Próximo gran evento</h2>
+      <h2 class="bloque-titulo">Próxima actividad</h2>
       <div class="evento-marco">
         {evento.imagen && <img class="evento-imagen" src={url(evento.imagen)} alt="" loading="lazy" decoding="async" width="600" height="338" />}
         <h3>{evento.titulo}</h3>
@@ -91,10 +91,10 @@ const ext = (e: string) => (esExterno(e) ? { target: '_blank', rel: 'noopener' }
         <a class="boton boton-contorno" href={`https://www.instagram.com/${sitio.instagram.usuario}/`} target="_blank" rel="noopener"><Icono nombre="instagram" tamano={18} /> Seguir en Instagram</a>
       </div>
     </header>
-    <div class="grilla-noticias grilla-ultimas">
-      {ultimas.map((i) => i.tipo === 'noticia'
+    <div class="tres-bloques grilla-ultimas">
+      {ultimas.map((i) => <div class="bloque bloque-post">{i.tipo === 'noticia'
         ? <TarjetaNoticia noticia={i.noticia} />
-        : <div class="tarjeta-instagram"><iframe src={`https://www.instagram.com/p/${i.codigo}/embed`} title="Publicación de Instagram" loading="lazy" scrolling="no"></iframe></div>)}
+        : <div class="tarjeta-instagram"><iframe src={`https://www.instagram.com/p/${i.codigo}/embed`} title="Publicación de Instagram" loading="lazy" scrolling="no"></iframe></div>}</div>)}
     </div>
   </div>
 </section>

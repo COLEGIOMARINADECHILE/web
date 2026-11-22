@@ -90,7 +90,7 @@ content:
                 type: select
                 options:
                   values:
-                    - { value: evento, label: Próximo gran evento }
+                    - { value: evento, label: Próxima actividad }
                     - { value: noticia, label: Una noticia o circular }
                     - { value: pagina, label: Una página }
               - name: noticia
@@ -106,7 +106,7 @@ content:
             type: reference
             options: { collection: paginas, search: titulo, value: "{name}", label: "{titulo}", multiple: true, max: 4 }
       - name: proximoEvento
-        label: Próximo gran evento (actualizar 1 vez a la semana)
+        label: Próxima actividad (actualizar 1 vez a la semana)
         type: object
         fields:
           - { name: titulo, label: Título, type: string }
