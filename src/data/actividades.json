@@ -1,32 +1,24 @@
 {
   "actividades": [
     {
-      "fecha": "2025-09-22",
-      "titulo": "Actividad Espacios Amigables"
-    },
-    {
-      "fecha": "2025-09-23",
-      "titulo": "Salida pedagógica Cerro Caracol: Biología de los ecosistemas"
-    },
-    {
-      "fecha": "2025-09-23",
-      "titulo": "Actividad Espacios Amigables"
-    },
-    {
-      "fecha": "2025-09-23",
-      "titulo": "Red territorial Inglés Biblioteca Colegio"
-    },
-    {
-      "fecha": "2025-09-24",
-      "titulo": "Salida pedagógica Prometeo Nacional: Interpretación teatral"
-    },
-    {
-      "fecha": "2025-09-25",
-      "titulo": "Lanzamiento Programa Acciona"
-    },
-    {
       "fecha": "2026-11-23",
       "titulo": "Licenciatura Cuartos Medios. Jornada única de 08:00 a 09:45 hrs"
+    },
+    {
+      "fecha": "2026-11-24",
+      "titulo": "Simce 2° Básico"
+    },
+    {
+      "fecha": "2026-11-24",
+      "titulo": "Visita Orquesta Armada"
+    },
+    {
+      "fecha": "2026-11-27",
+      "titulo": "Ceremonia de la Lectura"
+    },
+    {
+      "fecha": "2026-11-27",
+      "titulo": "Celebración Día del Apoderado"
     }
   ]
 }
