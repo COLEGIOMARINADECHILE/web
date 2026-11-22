@@ -1,13 +1,14 @@
 {
   "nombre": "Colegio Marina de Chile",
-  "lema": "Comprometidos con un futuro mejor",
+  "lema": "En el saber está la libertad",
   "direccion": "Marina de Chile 2836",
   "comuna": "Lorenzo Arenas",
   "ciudad": "Concepción",
   "telefono": "+56 44 304 9268",
   "accesos": {
     "principal": {
-      "tipo": "evento"
+      "tipo": "evento",
+      "noticia": "circular-18-2026.md"
     },
     "paginas": [
       "proceso-prematricula-2027",
