@@ -19,8 +19,11 @@
   ],
   "tarjetas": [
     {
-      "tipo": "noticia",
-      "noticia": "circular-18-2026.md"
+      "tipo": "enlace",
+      "noticia": "circular-18-2026.md",
+      "enlace": "https://colegiomarinadechile.github.io/programa/",
+      "titulo": "Programa Licenciatura 2028",
+      "imagen": "/uploads/Captura de pantalla 2026-11-23 a la(s) 08.23.18.png"
     },
     {
       "tipo": "pagina",
