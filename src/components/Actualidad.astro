@@ -83,17 +83,22 @@ const ext = (e: string) => (esExterno(e) ? { target: '_blank', rel: 'noopener' }
       {evento.enlace && <a class="enlace-flecha bloque-pie" href={url(evento.enlace)} {...ext(evento.enlace)}>Más información <Icono nombre="flecha" tamano={16} /></a>}
     </section>}
 
-    <section class="bloque">
-      <h2 class="bloque-titulo">Esta semana</h2>
-      <ol class="agenda">
-        {agenda.map((a) => (
-          <li data-fecha={a.fecha}>
-            <span class="agenda-fecha"><b>{a.dia}</b>{a.mes}</span>
-            <span class="agenda-texto"><small>{a.semana}</small>{a.titulo}</span>
-          </li>
-        ))}
-      </ol>
-      <p class="agenda-vacia" hidden><Icono nombre="calendario" tamano={28} /> No hay actividades programadas esta semana. Revisa nuestras redes sociales para estar al día.</p>
+    <section class="bloque bloque-agenda">
+      <div class="agenda-panel">
+        <div class="bloque-cabecera">
+          <h2 class="bloque-titulo">Esta semana</h2>
+          <button class="enlace-flecha agenda-ver-todas" type="button" aria-expanded="false" hidden>Ver todas <Icono nombre="flecha" tamano={16} /></button>
+        </div>
+        <ol class="agenda">
+          {agenda.map((a) => (
+            <li data-fecha={a.fecha}>
+              <span class="agenda-fecha"><b>{a.dia}</b>{a.mes}</span>
+              <span class="agenda-texto"><small>{a.semana}</small>{a.titulo}</span>
+            </li>
+          ))}
+        </ol>
+        <p class="agenda-vacia" hidden><Icono nombre="calendario" tamano={28} /> No hay actividades programadas esta semana. Revisa nuestras redes sociales para estar al día.</p>
+      </div>
     </section>
 
     {portada ? <section class="bloque">
@@ -146,15 +151,33 @@ const ext = (e: string) => (esExterno(e) ? { target: '_blank', rel: 'noopener' }
 </section>
 
 <script>
-  // Agenda: oculta lo que ya pasó y muestra solo las 4 próximas actividades.
-  const hoy = new Date().toISOString().slice(0, 10);
-  let visibles = 0;
+  // Agenda: oculta lo que ya pasó (según la fecha local) y muestra las 4 próximas.
+  // «Ver todas» despliega el mismo cuadro hacia abajo, encima de la página, con todas las que vienen.
+  const hoy = new Date().toLocaleDateString('sv-SE'); // AAAA-MM-DD en la hora de quien visita
+  let proximas = 0;
   document.querySelectorAll<HTMLElement>('.agenda:not(.circulares-lista) li').forEach((li) => {
-    const mostrar = (li.dataset.fecha ?? '') >= hoy && visibles < 4;
-    li.hidden = !mostrar;
-    if (mostrar) visibles++;
+    const viene = (li.dataset.fecha ?? '') >= hoy;
+    li.hidden = !viene;
+    if (viene) li.classList.toggle('agenda-extra', ++proximas > 4);
   });
-  if (!visibles) document.querySelector<HTMLElement>('.agenda-vacia')?.removeAttribute('hidden');
+  if (!proximas) document.querySelector<HTMLElement>('.agenda-vacia')?.removeAttribute('hidden');
+
+  const bloqueAgenda = document.querySelector<HTMLElement>('.bloque-agenda');
+  const verTodas = document.querySelector<HTMLButtonElement>('.agenda-ver-todas');
+  if (bloqueAgenda && verTodas && proximas > 4) {
+    verTodas.hidden = false;
+    const textoCerrado = verTodas.innerHTML;
+    const abrir = (si: boolean) => {
+      if (si) bloqueAgenda.style.minHeight = `${bloqueAgenda.offsetHeight}px`; // el cuadro no cambia de alto en la grilla
+      bloqueAgenda.classList.toggle('abierto', si);
+      verTodas.setAttribute('aria-expanded', String(si));
+      verTodas.innerHTML = si ? 'Ver menos' : textoCerrado;
+      if (!si) bloqueAgenda.style.minHeight = '';
+    };
+    verTodas.addEventListener('click', () => abrir(!bloqueAgenda.classList.contains('abierto')));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') abrir(false); });
+    document.addEventListener('click', (e) => { if (!bloqueAgenda.contains(e.target as Node)) abrir(false); });
+  }
 
   // Portada: las publicaciones de «Últimas actividades» toman el mismo alto que la fila de arriba.
   // Se mide el último bloque (Circulares), que siempre ocupa una sola fila.
